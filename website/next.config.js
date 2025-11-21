@@ -6,7 +6,9 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
+  // GitHub Pages 部署在子路徑 /volleyball-analysis/
+  basePath: '/volleyball-analysis',
+  assetPrefix: '/volleyball-analysis',
 }
 
 module.exports = nextConfig
