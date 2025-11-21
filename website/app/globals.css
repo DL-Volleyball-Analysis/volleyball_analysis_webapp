@@ -8,9 +8,41 @@
   --border: #1e293b;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: var(--background);
   color: var(--foreground);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* 確保所有文字都有正確的顏色 */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+p {
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .gradient-text {
@@ -18,6 +50,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  display: inline-block;
 }
 
 @keyframes fadeInUp {
@@ -33,5 +66,12 @@ body {
 
 .fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* 確保 Tailwind 工具類正確應用 */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 

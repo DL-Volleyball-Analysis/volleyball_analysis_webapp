@@ -81,7 +81,7 @@ export default function ProfessionalAt() {
   return (
     <section id="tech" className="pb-24 px-4 lg:px-8">
       <Copy delay={0.1}>
-        <h4 className="font-semibold uppercase mb-4 text-foreground">
+        <h4 className="font-semibold uppercase mb-4 text-slate-100 text-blue-400">
           使用的技術
         </h4>
         <p className="text-sm text-slate-400 mb-8">
@@ -93,18 +93,18 @@ export default function ProfessionalAt() {
         {/* Desktop Grid - 2 rows */}
         <div className="hidden lg:grid grid-rows-2">
           {/* First row - 3 columns */}
-          <div className="grid grid-cols-3 border-b border-border h-[clamp(200px,20vw,400px)]">
+          <div className="grid grid-cols-3 border-b border-slate-700 h-[clamp(200px,20vw,400px)]">
             {firstRow.map((tech) => (
               <Link
                 key={tech.name}
                 href={tech.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="grid-item flex flex-col items-center justify-center gap-3 border-r border-border last:border-r-0 group cursor-pointer bg-background transition-colors duration-300 hover:bg-slate-800"
+                className="grid-item flex flex-col items-center justify-center gap-3 border-r border-slate-700 last:border-r-0 group cursor-pointer bg-slate-900 transition-colors duration-300 hover:bg-slate-800"
                 aria-label={`Visit ${tech.name} website`}
               >
                 <tech.Icon 
-                  className="z-10 transition-all duration-300 text-foreground group-hover:scale-110"
+                  className="z-10 transition-all duration-300 text-slate-100 group-hover:scale-110"
                   style={{ width: tech.size, height: tech.size }}
                 />
                 <span className="text-sm text-slate-400 group-hover:text-blue-400 transition-colors">
@@ -122,11 +122,11 @@ export default function ProfessionalAt() {
                 href={tech.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`grid-item flex flex-col items-center justify-center gap-2 border-r border-border ${index === secondRow.length - 1 ? 'border-r-0' : ''} group cursor-pointer bg-background transition-colors duration-300 hover:bg-slate-800`}
+                className={`grid-item flex flex-col items-center justify-center gap-2 border-r border-slate-700 ${index === secondRow.length - 1 ? 'border-r-0' : ''} group cursor-pointer bg-slate-900 transition-colors duration-300 hover:bg-slate-800`}
                 aria-label={`Visit ${tech.name} website`}
               >
                 <tech.Icon 
-                  className="z-10 transition-all duration-300 text-foreground group-hover:scale-110"
+                  className="z-10 transition-all duration-300 text-slate-100 group-hover:scale-110"
                   style={{ width: tech.size, height: tech.size }}
                 />
                 <span className="text-xs text-slate-400 group-hover:text-blue-400 transition-colors">
@@ -149,12 +149,12 @@ export default function ProfessionalAt() {
                 href={tech.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`grid-item flex items-center justify-center border-r border-b border-border ${isRightColumn ? 'border-r-0' : ''} ${isLastRow ? 'border-b-0' : ''} group cursor-pointer h-[clamp(200px,20vw,400px)] bg-background transition-colors duration-300 hover:bg-slate-800`}
+                className={`grid-item flex items-center justify-center border-r border-b border-slate-700 ${isRightColumn ? 'border-r-0' : ''} ${isLastRow ? 'border-b-0' : ''} group cursor-pointer h-[clamp(200px,20vw,400px)] bg-slate-900 transition-colors duration-300 hover:bg-slate-800`}
                 aria-label={`Visit ${tech.name} website`}
               >
                 <div className="flex flex-col items-center gap-2">
                   <tech.Icon 
-                    className="z-10 transition-all duration-300 text-foreground group-hover:scale-110"
+                    className="z-10 transition-all duration-300 text-slate-100 group-hover:scale-110"
                     style={{ width: tech.size * 0.8, height: tech.size * 0.8 }}
                   />
                   <span className="text-xs text-slate-400 group-hover:text-blue-400 transition-colors">

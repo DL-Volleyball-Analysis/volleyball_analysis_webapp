@@ -19,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-TW" className="scroll-smooth">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased min-h-screen bg-slate-900 text-slate-100">
+        {children}
+      </body>
     </html>
   )
 }
