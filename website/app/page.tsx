@@ -1,20 +1,26 @@
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
+"use client";
+
+import { Hero } from "@/components/Hero";
+import { Features } from "@/components/Features";
 import SystemScreenshots from "@/components/SystemScreenshots";
 import ProfessionalAt from "@/components/ProfessionalAt";
-import DemoSection from "@/components/DemoSection";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import { Demo } from "@/components/Demo";
+import { Stats } from "@/components/Stats";
+import { HowItWorks } from "@/components/HowItWorks";
+import { CTA } from "@/components/CTA";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Navigation />
+    <main className="min-h-screen bg-background">
       <Hero />
+      <Stats />
       <Features />
       <SystemScreenshots />
       <ProfessionalAt />
-      <DemoSection />
+      <Demo />
+      <HowItWorks />
+      <CTA />
       <Footer />
     </main>
   );

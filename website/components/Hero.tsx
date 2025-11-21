@@ -1,42 +1,101 @@
-"use client";
+import { Button } from "./ui/button";
+import { Play, ArrowRight } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-import Copy from "./Copy";
-
-export default function Hero() {
+export function Hero() {
   return (
-    <div className="relative pt-32 pb-12 sm:pt-40 sm:pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <Copy delay={0}>
-          <h1 className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl">
-            <span className="block">基於深度學習的</span>
-            <span className="block gradient-text">排球比賽分析系統</span>
-          </h1>
-        </Copy>
-        
-        <Copy delay={0.1}>
-          <p className="mt-3 max-w-md mx-auto text-base text-slate-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            使用電腦視覺和深度學習技術追蹤排球軌跡、分析球員動作、識別關鍵事件，為球隊提供科學的數據分析工具。
-          </p>
-        </Copy>
-        
-        <Copy delay={0.2}>
-          <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center gap-4">
-            <a 
-              href="#demo" 
-              className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition"
-            >
-              查看演示
-            </a>
-            <a 
-              href="#features" 
-              className="w-full flex items-center justify-center px-8 py-3 border border-blue-600 text-base font-medium rounded-md text-blue-400 hover:bg-blue-600/10 md:py-4 md:text-lg md:px-10 transition"
-            >
-              了解更多
-            </a>
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
+      {/* Navigation */}
+      <nav className="relative z-10 container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              <span className="text-blue-600">⚡</span>
+            </div>
+            <span className="text-white">VolleyAnalytics</span>
           </div>
-        </Copy>
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-white/90 hover:text-white transition-colors">
+              Features
+            </a>
+            <a href="#demo" className="text-white/90 hover:text-white transition-colors">
+              Demo
+            </a>
+            <a href="#how-it-works" className="text-white/90 hover:text-white transition-colors">
+              How It Works
+            </a>
+            <Button variant="secondary" size="sm">
+              Get Started
+            </Button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Content */}
+      <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <span className="text-white/90 text-sm">AI-Powered Volleyball Analysis</span>
+            </div>
+            
+            <h1 className="text-white mb-6">
+              Transform Your Volleyball Game with Advanced Video Analysis
+            </h1>
+            
+            <p className="text-xl text-white/90 mb-8">
+              Leverage cutting-edge computer vision and AI to analyze player movements, track ball trajectories, 
+              and gain actionable insights from your volleyball matches.
+            </p>
+            
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" variant="secondary" className="gap-2">
+                <Play className="w-5 h-5" />
+                Watch Demo
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="gap-2 bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20"
+              >
+                Get Started
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
+              <ImageWithFallback
+                src="https://images.unsplash.com/photo-1762093805066-ca2afb453151?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwZ2FtZSUyMGFjdGlvbnxlbnwxfHx8fDE3NjM2MDkxNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                alt="Volleyball game analysis"
+                className="w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
+            </div>
+            
+            {/* Floating Stats */}
+            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                  ✓
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600">Accuracy Rate</div>
+                  <div className="text-gray-900">98.5%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-300 rounded-full blur-3xl"></div>
       </div>
     </div>
   );
 }
-

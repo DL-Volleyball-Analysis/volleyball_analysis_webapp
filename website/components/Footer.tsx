@@ -1,54 +1,70 @@
-export default function Footer() {
+import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+
+export function Footer() {
   return (
-    <footer className="bg-slate-900 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">關於專題</h3>
-            <p className="text-sm text-slate-400">
-              國立臺灣海洋大學資訊工程學系專題報告
-            </p>
-            <p className="text-sm text-slate-400 mt-2">
-              基於深度學習的排球比賽分析系統
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span>⚡</span>
+              </div>
+              <span>VolleyAnalytics</span>
+            </div>
+            <p className="text-gray-400 text-sm">
+              Advanced AI-powered volleyball analysis for teams and coaches.
             </p>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">技術支援</h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li>
-                <a href="https://github.com/itsYoga" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition">
-                  GitHub 儲存庫
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/itsYoga/volleyball-analysis/issues" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition">
-                  問題回報
-                </a>
-              </li>
+            <h4 className="mb-4">Product</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#demo" className="hover:text-white transition-colors">Demo</a></li>
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">聯絡資訊</h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li>作者：梁祐嘉</li>
-              <li>
-                <a href="mailto:ch993115@gmail.com" className="hover:text-blue-400 transition">
-                  ch993115@gmail.com
-                </a>
-              </li>
+            <h4 className="mb-4">Resources</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Tutorials</a></li>
+              <li><a href="https://github.com/itsYoga/volleyball-analysis" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
             </ul>
+          </div>
+          
+          <div>
+            <h4 className="mb-4">Connect</h4>
+            <div className="flex gap-4">
+              <a href="https://github.com/itsYoga/volleyball-analysis" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                <Mail className="w-5 h-5" />
+              </a>
+            </div>
           </div>
         </div>
         
-        <div className="border-t border-slate-800 pt-8 text-center">
-          <p className="text-base text-slate-500">
-            &copy; 2025 梁祐嘉. 本專題為國立臺灣海洋大學資訊工程學系專題報告。
-          </p>
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+          <div>© 2025 VolleyAnalytics. All rights reserved.</div>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">Contact</a>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
-
