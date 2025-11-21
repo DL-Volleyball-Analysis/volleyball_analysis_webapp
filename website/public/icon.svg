@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- 排球背景圓形 -->
+  <circle cx="50" cy="50" r="48" fill="#1e40af" stroke="#3b82f6" stroke-width="2"/>
+  
+  <!-- 排球圖案 - 三條線條形成經典排球圖案 -->
+  <path d="M 20 50 Q 50 30 80 50" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 20 50 Q 50 70 80 50" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 50 20 Q 30 50 50 80" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 50 20 Q 70 50 50 80" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- 中心點 -->
+  <circle cx="50" cy="50" r="3" fill="#ffffff"/>
+</svg>
+
