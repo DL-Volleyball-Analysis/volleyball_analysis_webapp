@@ -94,6 +94,7 @@ export function HowItWorks() {
               { name: "Python", icon: "🐍" },
               { name: "OpenCV", icon: "👁️" },
               { name: "YOLO", icon: "⚡" },
+              { name: "Ultralytics", icon: "🚀" },
               { name: "TensorFlow", icon: "🧠" },
               { name: "PyTorch", icon: "🔥" }
             ].map((tech, index) => (

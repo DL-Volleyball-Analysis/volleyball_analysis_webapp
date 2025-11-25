@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Play, ArrowRight } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { HeroVideo } from "./HeroVideo";
 
 export function Hero() {
   return (
@@ -39,24 +39,24 @@ export function Hero() {
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
               <span className="text-white/90 text-sm">AI-Powered Volleyball Analysis</span>
             </div>
-            
+
             <h1 className="text-white mb-6">
               Transform Your Volleyball Game with Advanced Video Analysis
             </h1>
-            
+
             <p className="text-xl text-white/90 mb-8">
-              Leverage cutting-edge computer vision and AI to analyze player movements, track ball trajectories, 
+              Leverage cutting-edge computer vision and AI to analyze player movements, track ball trajectories,
               and gain actionable insights from your volleyball matches.
             </p>
-            
+
             <div className="flex flex-wrap gap-4">
               <Button size="lg" variant="secondary" className="gap-2">
                 <Play className="w-5 h-5" />
                 Watch Demo
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="gap-2 bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20"
               >
                 Get Started
@@ -64,19 +64,12 @@ export function Hero() {
               </Button>
             </div>
           </div>
-          
+
           <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
-              <ImageWithFallback
-                src="https://images.unsplash.com/photo-1762093805066-ca2afb453151?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwZ2FtZSUyMGFjdGlvbnxlbnwxfHx8fDE3NjM2MDkxNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                alt="Volleyball game analysis"
-                className="w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
-            </div>
-            
+            <HeroVideo />
+
             {/* Floating Stats */}
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4">
+            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4 hidden md:block">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
                   ✓
@@ -90,7 +83,7 @@ export function Hero() {
           </div>
         </div>
       </div>
-      
+
       {/* Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>

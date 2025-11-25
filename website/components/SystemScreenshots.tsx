@@ -70,6 +70,7 @@ export default function SystemScreenshots() {
                     src={screenshot.image}
                     alt={language === 'en' ? screenshot.title_en : screenshot.title_zh}
                     className="w-full h-full object-contain p-2"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-4">
