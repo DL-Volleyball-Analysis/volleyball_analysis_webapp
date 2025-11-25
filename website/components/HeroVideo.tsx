@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
+import { cn, getAssetPath } from "./ui/utils";
 
 export function HeroVideo() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +75,7 @@ export function HeroVideo() {
                     )}
 
                     <video
-                        src="/videos/demo.mov"
+                        src={getAssetPath("/videos/demo.mov")}
                         className="w-full h-full object-cover"
                         autoPlay
                         muted

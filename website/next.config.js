@@ -12,6 +12,9 @@ const nextConfig = {
   // 只在 GitHub Pages (production) 套用子路徑，localhost 仍走根路徑
   basePath: isProd ? `/${repoName}` : '',
   assetPrefix: isProd ? `/${repoName}` : '',
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
+  },
 }
 
 module.exports = nextConfig

@@ -2,6 +2,7 @@
 
 import Copy from "./Copy";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getAssetPath } from "./ui/utils";
 
 const screenshots = [
   {
@@ -67,7 +68,7 @@ export default function SystemScreenshots() {
               <div className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20">
                 <div className="aspect-video relative bg-slate-900">
                   <img
-                    src={screenshot.image}
+                    src={getAssetPath(screenshot.image)}
                     alt={language === 'en' ? screenshot.title_en : screenshot.title_zh}
                     className="w-full h-full object-contain p-2"
                     loading="lazy"
