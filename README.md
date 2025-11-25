@@ -2,6 +2,8 @@
 
 A modern, professional web application for volleyball video analysis using AI-powered ball tracking, player detection, and action recognition.
 
+**Live Website:** [https://itsyoga.github.io/volleyball-analysis/](https://itsyoga.github.io/volleyball-analysis/)
+
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![React](https://img.shields.io/badge/react-18.2-blue)

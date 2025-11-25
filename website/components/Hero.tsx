@@ -10,7 +10,7 @@ export function Hero() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-blue-600">⚡</span>
+              <span className="text-blue-600 font-bold text-xl">V</span>
             </div>
             <span className="text-white">VolleyAnalytics</span>
           </div>
@@ -50,7 +50,12 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" variant="secondary" className="gap-2">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="gap-2"
+                onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
+              >
                 <Play className="w-5 h-5" />
                 Watch Demo
               </Button>
@@ -58,6 +63,7 @@ export function Hero() {
                 size="lg"
                 variant="outline"
                 className="gap-2 bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20"
+                onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
               >
                 Get Started
                 <ArrowRight className="w-5 h-5" />
@@ -67,19 +73,6 @@ export function Hero() {
 
           <div className="relative">
             <HeroVideo />
-
-            {/* Floating Stats */}
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4 hidden md:block">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
-                  ✓
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Accuracy Rate</div>
-                  <div className="text-gray-900">98.5%</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
