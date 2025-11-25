@@ -4,6 +4,7 @@ import { Badge } from "./ui/badge";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Play } from "lucide-react";
 import { Button } from "./ui/button";
+import { getAssetPath } from "./ui/utils";
 
 export function Demo() {
   return (
@@ -40,7 +41,7 @@ export function Demo() {
               <CardContent className="p-0">
                 <div className="relative group">
                   <ImageWithFallback
-                    src="/images/webapp/player_detection(boxes).png"
+                    src={getAssetPath("/images/webapp/player_detection(boxes).png")}
                     alt="Player tracking demo"
                     className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
@@ -83,7 +84,7 @@ export function Demo() {
               <CardContent className="p-0">
                 <div className="relative group">
                   <ImageWithFallback
-                    src="/images/webapp/action_boxes.png"
+                    src={getAssetPath("/images/webapp/action_boxes.png")}
                     alt="Ball trajectory analysis"
                     className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
@@ -126,7 +127,7 @@ export function Demo() {
               <CardContent className="p-0">
                 <div className="relative group">
                   <ImageWithFallback
-                    src="/images/webapp/play_sector.png"
+                    src={getAssetPath("/images/webapp/play_sector.png")}
                     alt="Court detection"
                     className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
@@ -169,7 +170,7 @@ export function Demo() {
               <CardContent className="p-0">
                 <div className="relative group">
                   <ImageWithFallback
-                    src="/images/webapp/player_stats.png"
+                    src={getAssetPath("/images/webapp/player_stats.png")}
                     alt="Player statistics and heatmaps"
                     className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />

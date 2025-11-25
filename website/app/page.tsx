@@ -7,6 +7,7 @@ import ProfessionalAt from "@/components/ProfessionalAt";
 import { Demo } from "@/components/Demo";
 import { Stats } from "@/components/Stats";
 import { HowItWorks } from "@/components/HowItWorks";
+import { Tutorials } from "@/components/Tutorials";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 
@@ -20,6 +21,7 @@ export default function Home() {
       <ProfessionalAt />
       <Demo />
       <HowItWorks />
+      <Tutorials />
       <CTA />
       <Footer />
     </main>

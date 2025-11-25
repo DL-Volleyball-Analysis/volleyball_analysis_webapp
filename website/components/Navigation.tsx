@@ -6,11 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
-
-  const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'zh-TW' : 'en');
-  };
+  const { t } = useLanguage();
 
   return (
     <nav className="fixed w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
@@ -35,13 +31,6 @@ export default function Navigation() {
               <a href="#demo" className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition">
                 {t.nav.demo}
               </a>
-              <button
-                onClick={toggleLanguage}
-                className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition"
-                aria-label="Toggle language"
-              >
-                {language === 'en' ? '中文' : 'EN'}
-              </button>
               <a
                 href="https://github.com/itsYoga"
                 target="_blank"
@@ -85,12 +74,6 @@ export default function Navigation() {
               <a href="#demo" className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium">
                 {t.nav.demo}
               </a>
-              <button
-                onClick={toggleLanguage}
-                className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium text-left"
-              >
-                {language === 'en' ? '中文' : 'EN'}
-              </button>
               <a
                 href="https://github.com/itsYoga"
                 target="_blank"

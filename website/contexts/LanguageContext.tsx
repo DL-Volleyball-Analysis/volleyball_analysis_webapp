@@ -12,7 +12,7 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [language, setLanguageState] = useState<Language>('zh-TW');
+    const [language, setLanguageState] = useState<Language>('en');
 
     useEffect(() => {
         // Load language preference from localStorage
