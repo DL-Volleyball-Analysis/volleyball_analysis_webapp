@@ -1,14 +1,33 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn, getAssetPath } from "./ui/utils";
 
-export function HeroVideo() {
+export interface HeroVideoHandle {
+    requestFullScreen: () => void;
+}
+
+export const HeroVideo = forwardRef<HeroVideoHandle>((props, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const [isFloating, setIsFloating] = useState(false);
     const [isClosed, setIsClosed] = useState(false);
+
+    useImperativeHandle(ref, () => ({
+        requestFullScreen: () => {
+            if (videoRef.current) {
+                if (videoRef.current.requestFullscreen) {
+                    videoRef.current.requestFullscreen();
+                } else if ((videoRef.current as any).webkitRequestFullscreen) {
+                    (videoRef.current as any).webkitRequestFullscreen();
+                } else if ((videoRef.current as any).msRequestFullscreen) {
+                    (videoRef.current as any).msRequestFullscreen();
+                }
+            }
+        }
+    }));
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -75,6 +94,7 @@ export function HeroVideo() {
                     )}
 
                     <video
+                        ref={videoRef}
                         src={getAssetPath("/videos/demo.mov")}
                         className="w-full h-full object-cover"
                         autoPlay
@@ -93,4 +113,6 @@ export function HeroVideo() {
             </div>
         </>
     );
-}
+});
+
+HeroVideo.displayName = "HeroVideo";

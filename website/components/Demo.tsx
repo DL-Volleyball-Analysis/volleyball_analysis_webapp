@@ -7,71 +7,70 @@ import { Button } from "./ui/button";
 
 export function Demo() {
   return (
-    <section id="demo" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="container mx-auto px-4">
+    <section id="demo" className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl mix-blend-screen"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full blur-3xl mix-blend-screen"></div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full mb-4">
+          <div className="inline-block px-4 py-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full mb-4 backdrop-blur-sm">
             See It In Action
           </div>
-          <h2 className="text-gray-900 mb-4">
+          <h2 className="text-white text-4xl font-bold mb-4 tracking-tight">
             Experience the Power of AI Analysis
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             Explore how our system analyzes every aspect of volleyball gameplay with precision and speed.
           </p>
         </div>
 
         <Tabs defaultValue="tracking" className="max-w-5xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-            <TabsTrigger value="tracking">Player Tracking</TabsTrigger>
-            <TabsTrigger value="ball">Ball Analysis</TabsTrigger>
-            <TabsTrigger value="court">Court Detection</TabsTrigger>
-            <TabsTrigger value="heatmap">Heat Maps</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-slate-800/50 p-1 rounded-xl border border-slate-700">
+            <TabsTrigger value="tracking" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-300">Player Tracking</TabsTrigger>
+            <TabsTrigger value="ball" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-300">Ball Analysis</TabsTrigger>
+            <TabsTrigger value="court" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-300">Court Detection</TabsTrigger>
+            <TabsTrigger value="heatmap" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-300">Heat Maps</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="tracking" className="space-y-4">
-            <Card className="overflow-hidden border-2">
+          <TabsContent value="tracking" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
+            <Card className="overflow-hidden border-slate-700 bg-slate-800/50 backdrop-blur-sm shadow-2xl">
               <CardContent className="p-0">
-                <div className="relative">
+                <div className="relative group">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1762093805066-ca2afb453151?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwZ2FtZSUyMGFjdGlvbnxlbnwxfHx8fDE3NjM2MDkxNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src="/images/webapp/player_detection(boxes).png"
                     alt="Player tracking demo"
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  
-                  {/* Simulated tracking overlays */}
-                  <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                    <Badge className="bg-blue-600">Player #4 - Setter</Badge>
-                    <Badge className="bg-purple-600">Player #9 - Spiker</Badge>
-                    <Badge className="bg-green-600">Player #12 - Libero</Badge>
-                  </div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
                   <div className="absolute bottom-4 right-4">
-                    <Button variant="secondary" size="sm" className="gap-2">
+                    <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      Play Demo
+                      View Analysis
                     </Button>
                   </div>
                 </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-gray-900 mb-2">Real-time Player Detection</h3>
-                  <p className="text-gray-600">
-                    Our AI tracks each player's position, movement speed, and orientation throughout the match. 
+                <div className="p-8 bg-slate-900/90 border-t border-slate-700">
+                  <h3 className="text-white text-xl font-semibold mb-2">Real-time Player Detection</h3>
+                  <p className="text-slate-400">
+                    Our AI tracks each player's position, movement speed, and orientation throughout the match.
                     Bounding boxes and IDs are maintained even during occlusions.
                   </p>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-blue-600">12</div>
-                      <div className="text-sm text-gray-600">Players Tracked</div>
+                  <div className="grid grid-cols-3 gap-4 mt-6">
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
+                      <div className="text-blue-400 font-bold text-xl">12</div>
+                      <div className="text-sm text-slate-500">Players Tracked</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-blue-600">98.3%</div>
-                      <div className="text-sm text-gray-600">Accuracy</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
+                      <div className="text-blue-400 font-bold text-xl">98.3%</div>
+                      <div className="text-sm text-slate-500">Accuracy</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-blue-600">30 FPS</div>
-                      <div className="text-sm text-gray-600">Processing</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
+                      <div className="text-blue-400 font-bold text-xl">30 FPS</div>
+                      <div className="text-sm text-slate-500">Processing</div>
                     </div>
                   </div>
                 </div>
@@ -79,59 +78,42 @@ export function Demo() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="ball" className="space-y-4">
-            <Card className="overflow-hidden border-2">
+          <TabsContent value="ball" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
+            <Card className="overflow-hidden border-slate-700 bg-slate-800/50 backdrop-blur-sm shadow-2xl">
               <CardContent className="p-0">
-                <div className="relative">
+                <div className="relative group">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1533739331049-c6a02504f54f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwdGVhbSUyMHBsYXlpbmd8ZW58MXx8fHwxNzYzNzA5MjA5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src="/images/webapp/action_boxes.png"
                     alt="Ball trajectory analysis"
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  
-                  {/* Simulated trajectory */}
-                  <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                    <path
-                      d="M 100 300 Q 400 100 700 250"
-                      stroke="#f59e0b"
-                      strokeWidth="3"
-                      fill="none"
-                      strokeDasharray="5,5"
-                      className="animate-pulse"
-                    />
-                    <circle cx="700" cy="250" r="8" fill="#f59e0b" />
-                  </svg>
-                  
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-orange-600">Ball Velocity: 72 km/h</Badge>
-                  </div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
                   <div className="absolute bottom-4 right-4">
-                    <Button variant="secondary" size="sm" className="gap-2">
+                    <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      Play Demo
+                      View Analysis
                     </Button>
                   </div>
                 </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-gray-900 mb-2">Ball Trajectory Tracking</h3>
-                  <p className="text-gray-600">
-                    Track the volleyball's path with frame-by-frame precision. Analyze serve speeds, spike velocities, 
-                    and predict landing zones with our advanced physics engine.
+                <div className="p-8 bg-slate-900/90 border-t border-slate-700">
+                  <h3 className="text-white text-xl font-semibold mb-2">Action Recognition & Ball Tracking</h3>
+                  <p className="text-slate-400">
+                    Track the volleyball's path and identify key actions like serves, spikes, and blocks.
+                    Analyze velocities and predict landing zones with our advanced physics engine.
                   </p>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-orange-600">3D</div>
-                      <div className="text-sm text-gray-600">Trajectory</div>
+                  <div className="grid grid-cols-3 gap-4 mt-6">
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
+                      <div className="text-orange-400 font-bold text-xl">5+</div>
+                      <div className="text-sm text-slate-500">Action Types</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-orange-600">±2cm</div>
-                      <div className="text-sm text-gray-600">Precision</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
+                      <div className="text-orange-400 font-bold text-xl">±2cm</div>
+                      <div className="text-sm text-slate-500">Precision</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-orange-600">100%</div>
-                      <div className="text-sm text-gray-600">Coverage</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
+                      <div className="text-orange-400 font-bold text-xl">100%</div>
+                      <div className="text-sm text-slate-500">Coverage</div>
                     </div>
                   </div>
                 </div>
@@ -139,47 +121,42 @@ export function Demo() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="court" className="space-y-4">
-            <Card className="overflow-hidden border-2">
+          <TabsContent value="court" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
+            <Card className="overflow-hidden border-slate-700 bg-slate-800/50 backdrop-blur-sm shadow-2xl">
               <CardContent className="p-0">
-                <div className="relative">
+                <div className="relative group">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1671706474508-2d1e05be761d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwY291cnQlMjBhZXJpYWx8ZW58MXx8fHwxNzYzNzA5MjA5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src="/images/webapp/play_sector.png"
                     alt="Court detection"
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  
-                  <div className="absolute top-4 left-4 space-y-2">
-                    <Badge className="bg-green-600 block w-fit">Attack Zone Detected</Badge>
-                    <Badge className="bg-cyan-600 block w-fit">Service Line Detected</Badge>
-                  </div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
                   <div className="absolute bottom-4 right-4">
-                    <Button variant="secondary" size="sm" className="gap-2">
+                    <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      Play Demo
+                      View Analysis
                     </Button>
                   </div>
                 </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-gray-900 mb-2">Automatic Court Detection</h3>
-                  <p className="text-gray-600">
-                    Our system automatically identifies court boundaries, zones, and lines regardless of camera angle. 
+                <div className="p-8 bg-slate-900/90 border-t border-slate-700">
+                  <h3 className="text-white text-xl font-semibold mb-2">Automatic Court Detection</h3>
+                  <p className="text-slate-400">
+                    Our system automatically identifies court boundaries, zones, and lines regardless of camera angle.
                     This enables accurate spatial analysis and positioning metrics.
                   </p>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-green-600">6</div>
-                      <div className="text-sm text-gray-600">Zones Mapped</div>
+                  <div className="grid grid-cols-3 gap-4 mt-6">
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
+                      <div className="text-green-400 font-bold text-xl">6</div>
+                      <div className="text-sm text-slate-500">Zones Mapped</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-green-600">Auto</div>
-                      <div className="text-sm text-gray-600">Calibration</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
+                      <div className="text-green-400 font-bold text-xl">Auto</div>
+                      <div className="text-sm text-slate-500">Calibration</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-green-600">Any</div>
-                      <div className="text-sm text-gray-600">Camera Angle</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
+                      <div className="text-green-400 font-bold text-xl">Any</div>
+                      <div className="text-sm text-slate-500">Camera Angle</div>
                     </div>
                   </div>
                 </div>
@@ -187,73 +164,42 @@ export function Demo() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="heatmap" className="space-y-4">
-            <Card className="overflow-hidden border-2">
+          <TabsContent value="heatmap" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
+            <Card className="overflow-hidden border-slate-700 bg-slate-800/50 backdrop-blur-sm shadow-2xl">
               <CardContent className="p-0">
-                <div className="relative">
-                  <div className="aspect-video bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 relative overflow-hidden">
-                    {/* Simulated heatmap overlay */}
-                    <div className="absolute inset-0 opacity-60">
-                      <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-red-500 rounded-full blur-3xl"></div>
-                      <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-orange-500 rounded-full blur-3xl"></div>
-                      <div className="absolute top-2/3 right-1/3 w-36 h-36 bg-yellow-500 rounded-full blur-3xl"></div>
-                      <div className="absolute bottom-1/4 left-1/4 w-28 h-28 bg-green-500 rounded-full blur-3xl"></div>
-                    </div>
-                    
-                    {/* Court outline */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="border-2 border-white/30 w-4/5 h-3/4 relative">
-                        <div className="absolute top-1/2 left-0 right-0 h-px bg-white/30"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-purple-600">Player #4 - Coverage Map</Badge>
-                  </div>
-                  
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2">
-                    <div className="flex items-center gap-2 text-xs">
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-red-500 rounded"></div>
-                        <span>High</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-                        <span>Medium</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-green-500 rounded"></div>
-                        <span>Low</span>
-                      </div>
-                    </div>
-                  </div>
-                  
+                <div className="relative group">
+                  <ImageWithFallback
+                    src="/images/webapp/player_stats.png"
+                    alt="Player statistics and heatmaps"
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
                   <div className="absolute bottom-4 right-4">
-                    <Button variant="secondary" size="sm" className="gap-2">
+                    <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      Play Demo
+                      View Analysis
                     </Button>
                   </div>
                 </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-gray-900 mb-2">Movement Heat Maps</h3>
-                  <p className="text-gray-600">
-                    Visualize player coverage areas and movement patterns throughout the match. 
+                <div className="p-8 bg-slate-900/90 border-t border-slate-700">
+                  <h3 className="text-white text-xl font-semibold mb-2">Advanced Statistics & Heat Maps</h3>
+                  <p className="text-slate-400">
+                    Visualize player coverage areas and movement patterns throughout the match.
                     Identify hot zones, defensive gaps, and optimize positioning strategies.
                   </p>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-purple-600">Per Player</div>
-                      <div className="text-sm text-gray-600">Analysis</div>
+                  <div className="grid grid-cols-3 gap-4 mt-6">
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
+                      <div className="text-purple-400 font-bold text-xl">Per Player</div>
+                      <div className="text-sm text-slate-500">Analysis</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-purple-600">Team</div>
-                      <div className="text-sm text-gray-600">Coverage</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
+                      <div className="text-purple-400 font-bold text-xl">Team</div>
+                      <div className="text-sm text-slate-500">Coverage</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-purple-600">Time</div>
-                      <div className="text-sm text-gray-600">Based</div>
+                    <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
+                      <div className="text-purple-400 font-bold text-xl">Time</div>
+                      <div className="text-sm text-slate-500">Based</div>
                     </div>
                   </div>
                 </div>

@@ -46,17 +46,23 @@ export default function SystemScreenshots() {
   const { language, t } = useLanguage();
 
   return (
-    <section id="screenshots" className="py-16 bg-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="screenshots" className="py-24 bg-slate-900 relative overflow-hidden">
+      {/* Background gradients */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <Copy delay={0}>
-          <div className="lg:text-center mb-12">
-            <h2 className="text-base text-blue-400 font-semibold tracking-wide uppercase">
+          <div className="lg:text-center mb-16">
+            <h2 className="text-base text-blue-400 font-semibold tracking-wide uppercase mb-2">
               {t.screenshots.title}
             </h2>
             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
               {t.screenshots.title}
             </p>
-            <p className="mt-4 max-w-2xl mx-auto text-base text-slate-400">
+            <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
               {t.screenshots.description}
             </p>
           </div>
@@ -65,20 +71,21 @@ export default function SystemScreenshots() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {screenshots.map((screenshot, index) => (
             <Copy key={screenshot.title_en} delay={0.1 + index * 0.05}>
-              <div className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20">
-                <div className="aspect-video relative bg-slate-900">
+              <div className="group bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
+                <div className="aspect-video relative bg-slate-900/50 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                   <img
                     src={getAssetPath(screenshot.image)}
                     alt={language === 'en' ? screenshot.title_en : screenshot.title_zh}
-                    className="w-full h-full object-contain p-2"
+                    className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
+                <div className="p-6 relative z-20">
+                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">
                     {language === 'en' ? screenshot.title_en : screenshot.title_zh}
                   </h3>
-                  <p className="text-sm text-slate-400">
+                  <p className="text-slate-400 leading-relaxed">
                     {language === 'en' ? screenshot.description_en : screenshot.description_zh}
                   </p>
                 </div>

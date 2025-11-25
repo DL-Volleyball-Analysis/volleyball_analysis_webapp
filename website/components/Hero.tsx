@@ -1,8 +1,17 @@
 import { Button } from "./ui/button";
 import { Play, ArrowRight } from "lucide-react";
-import { HeroVideo } from "./HeroVideo";
+import { HeroVideo, HeroVideoHandle } from "./HeroVideo";
+import { useRef } from "react";
 
 export function Hero() {
+  const videoRef = useRef<HeroVideoHandle>(null);
+
+  const handleWatchDemo = () => {
+    if (videoRef.current) {
+      videoRef.current.requestFullScreen();
+    }
+  };
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
       {/* Navigation */}
@@ -54,7 +63,7 @@ export function Hero() {
                 size="lg"
                 variant="secondary"
                 className="gap-2"
-                onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
+                onClick={handleWatchDemo}
               >
                 <Play className="w-5 h-5" />
                 Watch Demo
@@ -72,7 +81,7 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            <HeroVideo />
+            <HeroVideo ref={videoRef} />
           </div>
         </div>
       </div>
