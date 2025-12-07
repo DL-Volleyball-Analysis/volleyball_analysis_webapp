@@ -26,7 +26,7 @@ export default function TermsOfService() {
 
                     <h1 className="text-4xl font-bold mb-8">{isZh ? '服務條款' : 'Terms of Service'}</h1>
 
-                    <div className="prose prose-invert prose-lg max-w-none space-y-8">
+                    <div className="max-w-none space-y-8">
                         <p className="text-slate-300 text-lg">
                             {isZh ? '最後更新：2025 年 12 月' : 'Last updated: December 2025'}
                         </p>
