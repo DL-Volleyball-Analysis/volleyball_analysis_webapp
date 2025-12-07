@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
                         {isZh ? '返回首頁' : 'Back to Home'}
                     </Link>
 
-                    <h1 className="text-4xl font-bold mb-8">{isZh ? '隱私政策' : 'Privacy Policy'}</h1>
+                    <h1 className="text-4xl font-bold mb-8 text-white">{isZh ? '隱私政策' : 'Privacy Policy'}</h1>
 
                     <div className="max-w-none space-y-8">
                         <p className="text-slate-300 text-lg">

@@ -39,7 +39,7 @@ export default function Contact() {
                         {isZh ? '返回首頁' : 'Back to Home'}
                     </Link>
 
-                    <h1 className="text-4xl font-bold mb-4">{isZh ? '聯絡我們' : 'Contact Us'}</h1>
+                    <h1 className="text-4xl font-bold mb-4 text-white">{isZh ? '聯絡我們' : 'Contact Us'}</h1>
                     <p className="text-slate-300 text-lg mb-12">
                         {isZh ? '對 VolleyVision AI 有疑問嗎？我們很樂意聽取您的意見。' : "Have questions about VolleyVision AI? We'd love to hear from you."}
                     </p>
