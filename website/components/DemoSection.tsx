@@ -4,7 +4,8 @@ import Copy from "./Copy";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function DemoSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isZh = language === 'zh-TW';
 
   return (
     <section id="demo" className="py-16 bg-slate-800/50">
@@ -12,13 +13,13 @@ export default function DemoSection() {
         <Copy delay={0}>
           <div className="lg:text-center mb-10">
             <h2 className="text-base text-blue-400 font-semibold tracking-wide uppercase">
-              {t.demo.title}
+              {t.demo.badge}
             </h2>
             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
               {t.demo.title}
             </p>
             <p className="mt-4 max-w-2xl mx-auto text-base text-slate-400">
-              {t.demo.description}
+              {t.demo.subtitle}
             </p>
           </div>
         </Copy>
@@ -46,7 +47,7 @@ export default function DemoSection() {
                 />
               </svg>
               <p className="mt-2 text-slate-400 text-lg">
-                {t.demo.placeholder}
+                {isZh ? '演示影片將顯示在此處' : 'Demo video will be displayed here'}
               </p>
             </div>
           </div>
