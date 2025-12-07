@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Upload, CheckCircle, AlertCircle, Loader2, Library, Play } from 'lucide-react';
-import { uploadVideo, startAnalysis } from '../services/api';
+import { uploadVideo, getAnalysisWebSocketUrl } from '../services/api';
 
 interface UploadStatus {
   status: 'idle' | 'uploading' | 'analyzing' | 'completed' | 'error';
@@ -17,6 +17,7 @@ export const VideoUpload: React.FC = () => {
     progress: 0
   });
   const [dragActive, setDragActive] = useState(false);
+  const wsRef = useRef<WebSocket | null>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ export const VideoUpload: React.FC = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFile(e.dataTransfer.files[0]);
     }
@@ -70,13 +71,78 @@ export const VideoUpload: React.FC = () => {
       formData.append('file', file);
 
       const uploadResponse = await uploadVideo(formData);
-      
-      setUploadStatus({ status: 'analyzing', message: 'Video uploaded. Starting analysis...', progress: 50, videoId: uploadResponse.video_id });
+      const videoId = uploadResponse.video_id;
 
-      // 開始分析
-      await startAnalysis(uploadResponse.video_id);
-      
-      setUploadStatus({ status: 'completed', message: 'Analysis has started. Check progress in your library.', progress: 100, videoId: uploadResponse.video_id });
+      setUploadStatus({
+        status: 'analyzing',
+        message: 'Video uploaded. Connecting to real-time analysis...',
+        progress: 0,
+        videoId
+      });
+
+      // 使用 WebSocket 連接即時分析
+      const wsUrl = getAnalysisWebSocketUrl(videoId);
+      console.log('🔌 Connecting to WebSocket:', wsUrl);
+
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        console.log('✅ WebSocket connected');
+        setUploadStatus(prev => ({
+          ...prev,
+          message: 'Analysis started. Real-time progress...'
+        }));
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('📡 WebSocket message:', data);
+
+          if (data.status === 'processing') {
+            setUploadStatus(prev => ({
+              ...prev,
+              status: 'analyzing',
+              message: data.message || `Analyzing... ${data.progress.toFixed(1)}%`,
+              progress: Math.round(data.progress)
+            }));
+          } else if (data.status === 'completed') {
+            setUploadStatus({
+              status: 'completed',
+              message: `Analysis complete! Detected ${data.summary?.actions_detected || 0} actions.`,
+              progress: 100,
+              videoId
+            });
+            ws.close();
+          } else if (data.status === 'failed') {
+            setUploadStatus({
+              status: 'error',
+              message: `Analysis failed: ${data.error || 'Unknown error'}`,
+              progress: 0,
+              videoId
+            });
+            ws.close();
+          }
+        } catch (e) {
+          console.error('Failed to parse WebSocket message:', e);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error('❌ WebSocket error:', error);
+        setUploadStatus({
+          status: 'error',
+          message: 'Connection error. Please try again.',
+          progress: 0,
+          videoId
+        });
+      };
+
+      ws.onclose = () => {
+        console.log('🔌 WebSocket closed');
+        wsRef.current = null;
+      };
 
     } catch (error: any) {
       setUploadStatus({ status: 'error', message: `Upload failed: ${error.message}`, progress: 0 });
@@ -129,8 +195,8 @@ export const VideoUpload: React.FC = () => {
           <div
             className={`
               relative border-2 border-dashed rounded-xl p-16 text-center transition-all duration-300
-              ${dragActive 
-                ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 scale-[1.02]' 
+              ${dragActive
+                ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 scale-[1.02]'
                 : getStatusColor()
               }
               ${uploadStatus.status === 'idle' ? 'hover:border-blue-400 hover:bg-gray-50 cursor-pointer' : ''}
@@ -147,17 +213,17 @@ export const VideoUpload: React.FC = () => {
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               disabled={uploadStatus.status === 'uploading' || uploadStatus.status === 'analyzing'}
             />
-            
+
             <div className="flex flex-col items-center">
               <div className="mb-6">
                 {getStatusIcon()}
               </div>
-              
+
               <div className="space-y-3">
                 <p className="text-xl font-semibold text-gray-900">
                   {uploadStatus.message}
                 </p>
-                
+
                 {uploadStatus.status === 'uploading' || uploadStatus.status === 'analyzing' ? (
                   <div className="mt-6 space-y-3">
                     <div className="w-64 mx-auto bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -213,14 +279,14 @@ export const VideoUpload: React.FC = () => {
                       Your video has been uploaded and analysis has started. You can track progress in your library.
                     </p>
                     <div className="flex flex-wrap gap-3">
-                      <Link 
-                        to={`/library`} 
+                      <Link
+                        to={`/library`}
                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all shadow-md hover:shadow-lg font-medium"
                       >
                         <Library className="w-4 h-4" /> View Library
                       </Link>
-                      <Link 
-                        to={`/player/${uploadStatus.videoId}`} 
+                      <Link
+                        to={`/player/${uploadStatus.videoId}`}
                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg font-medium"
                       >
                         <Play className="w-4 h-4" /> Watch Now

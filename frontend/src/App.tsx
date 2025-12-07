@@ -1,14 +1,18 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, NavLink, Link, useLocation } from 'react-router-dom';
 import { VideoUpload } from './components/VideoUpload';
 import { VideoLibrary } from './components/VideoLibrary';
 import { Dashboard } from './components/Dashboard';
 import { VideoPlayer } from './components/VideoPlayer';
-import { LayoutDashboard, Upload, Library, Activity } from 'lucide-react';
+import { Privacy } from './components/Privacy';
+import { Terms } from './components/Terms';
+import { Support } from './components/Support';
+import { LayoutDashboard, Upload, Library, Activity, Menu, X, Github, Heart } from 'lucide-react';
 
 function Navigation() {
   const location = useLocation();
-  
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const navItems = [
     { path: '/', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/upload', label: 'Upload', icon: Upload },
@@ -16,36 +20,92 @@ function Navigation() {
   ];
 
   return (
-    <nav className="hidden md:flex items-center gap-1">
-      {navItems.map(({ path, label, icon: Icon }) => {
-        const isActive = location.pathname === path;
-        return (
-          <NavLink
-            key={path}
-            to={path}
-            className={`
-              flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-              ${isActive 
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' 
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }
-            `}
+    <>
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center gap-1">
+        {navItems.map(({ path, label, icon: Icon }) => {
+          const isActive = location.pathname === path;
+          return (
+            <NavLink
+              key={path}
+              to={path}
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                ${isActive
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                }
+              `}
+            >
+              <Icon className="w-4 h-4" />
+              {label}
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      {/* Mobile Menu Button */}
+      <button
+        className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        aria-label="Toggle menu"
+      >
+        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      {/* Mobile Navigation Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setMobileMenuOpen(false)}>
+          <div
+            className="absolute right-0 top-0 h-full w-64 bg-white shadow-xl"
+            onClick={(e) => e.stopPropagation()}
           >
-            <Icon className="w-4 h-4" />
-            {label}
-          </NavLink>
-        );
-      })}
-    </nav>
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-gray-900">Menu</span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 rounded-lg hover:bg-gray-100"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <nav className="p-4 space-y-2">
+              {navItems.map(({ path, label, icon: Icon }) => {
+                const isActive = location.pathname === path;
+                return (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`
+                      flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all
+                      ${isActive
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                      }
+                    `}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {label}
+                  </NavLink>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col">
         {/* Modern Header */}
-        <header className="sticky top-0 z-50 border-b border-gray-200/80 bg-white/80 backdrop-blur-xl shadow-sm">
+        <header className="sticky top-0 z-40 border-b border-gray-200/80 bg-white/80 backdrop-blur-xl shadow-sm">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <NavLink to="/" className="flex items-center gap-3 group">
@@ -68,26 +128,62 @@ function App() {
         </header>
 
         {/* Content Area */}
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/upload" element={<VideoUpload />} />
             <Route path="/library" element={<VideoLibrary />} />
             <Route path="/player/:videoId" element={<VideoPlayer />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/support" element={<Support />} />
           </Routes>
         </main>
 
-        {/* Modern Footer */}
-        <footer className="border-t border-gray-200 bg-white/50 backdrop-blur-sm mt-20">
+        {/* Enhanced Footer */}
+        <footer className="border-t border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 mt-auto">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-gray-600">
-                © {new Date().getFullYear()} Volleyball AI Analysis System. Powered by AI.
-              </p>
-              <div className="flex items-center gap-6 text-sm text-gray-500">
-                <button className="hover:text-gray-900 transition-colors cursor-pointer">Privacy</button>
-                <button className="hover:text-gray-900 transition-colors cursor-pointer">Terms</button>
-                <button className="hover:text-gray-900 transition-colors cursor-pointer">Support</button>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              {/* Logo and Copyright */}
+              <div className="flex flex-col items-center md:items-start gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-1.5 rounded-lg">
+                    <Activity className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="font-semibold text-gray-900">Volleyball AI</span>
+                </div>
+                <p className="text-sm text-gray-500">
+                  © {new Date().getFullYear()} Volleyball AI Analysis System
+                </p>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex items-center gap-6 text-sm">
+                <Link to="/privacy" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                  Privacy
+                </Link>
+                <Link to="/terms" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                  Terms
+                </Link>
+                <Link to="/support" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                  Support
+                </Link>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://github.com/itsYoga/volleyball-analysis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="w-4 h-4 text-gray-700" />
+                </a>
+                <span className="text-sm text-gray-500 flex items-center gap-1">
+                  Made with <Heart className="w-4 h-4 text-red-500" /> AI
+                </span>
               </div>
             </div>
           </div>
@@ -98,3 +194,4 @@ function App() {
 }
 
 export default App;
+

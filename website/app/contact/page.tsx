@@ -48,7 +48,7 @@ export default function Contact() {
                         {/* Contact Info */}
                         <div className="space-y-8">
                             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                                <h2 className="text-xl font-semibold mb-6">{isZh ? '聯繫方式' : 'Get in Touch'}</h2>
+                                <h2 className="text-xl font-semibold mb-6 text-white">{isZh ? '聯繫方式' : 'Get in Touch'}</h2>
 
                                 <div className="space-y-4">
                                     <div className="flex items-start gap-4">
@@ -56,7 +56,7 @@ export default function Contact() {
                                             <Mail className="w-5 h-5 text-blue-400" />
                                         </div>
                                         <div>
-                                            <h3 className="font-medium">{isZh ? '電子郵件' : 'Email'}</h3>
+                                            <h3 className="font-medium text-white">{isZh ? '電子郵件' : 'Email'}</h3>
                                             <a
                                                 href="mailto:ch993115@gmail.com"
                                                 className="text-slate-400 hover:text-blue-400 transition-colors"
@@ -71,7 +71,7 @@ export default function Contact() {
                                             <Github className="w-5 h-5 text-blue-400" />
                                         </div>
                                         <div>
-                                            <h3 className="font-medium">GitHub</h3>
+                                            <h3 className="font-medium text-white">GitHub</h3>
                                             <a
                                                 href="https://github.com/itsYoga/volleyball-analysis"
                                                 target="_blank"
@@ -88,7 +88,7 @@ export default function Contact() {
                                             <MapPin className="w-5 h-5 text-blue-400" />
                                         </div>
                                         <div>
-                                            <h3 className="font-medium">{isZh ? '地點' : 'Location'}</h3>
+                                            <h3 className="font-medium text-white">{isZh ? '地點' : 'Location'}</h3>
                                             <p className="text-slate-400">{isZh ? '台灣' : 'Taiwan'}</p>
                                         </div>
                                     </div>
@@ -105,15 +105,15 @@ export default function Contact() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <h2 className="text-xl font-semibold mb-2">{isZh ? '訊息已發送！' : 'Message Sent!'}</h2>
+                                    <h2 className="text-xl font-semibold mb-2 text-white">{isZh ? '訊息已發送！' : 'Message Sent!'}</h2>
                                     <p className="text-slate-400">{isZh ? '感謝您的來信，我們會盡快回覆。' : "Thank you for reaching out. We'll get back to you soon."}</p>
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-4">
-                                    <h2 className="text-xl font-semibold mb-4">{isZh ? '發送訊息' : 'Send a Message'}</h2>
+                                    <h2 className="text-xl font-semibold mb-4 text-white">{isZh ? '發送訊息' : 'Send a Message'}</h2>
 
                                     <div>
-                                        <label htmlFor="name" className="block text-sm font-medium mb-2">{isZh ? '姓名' : 'Name'}</label>
+                                        <label htmlFor="name" className="block text-sm font-medium mb-2 text-slate-200">{isZh ? '姓名' : 'Name'}</label>
                                         <input
                                             type="text"
                                             id="name"
@@ -125,7 +125,7 @@ export default function Contact() {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="email" className="block text-sm font-medium mb-2">{isZh ? '電子郵件' : 'Email'}</label>
+                                        <label htmlFor="email" className="block text-sm font-medium mb-2 text-slate-200">{isZh ? '電子郵件' : 'Email'}</label>
                                         <input
                                             type="email"
                                             id="email"
@@ -137,7 +137,7 @@ export default function Contact() {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="subject" className="block text-sm font-medium mb-2">{isZh ? '主旨' : 'Subject'}</label>
+                                        <label htmlFor="subject" className="block text-sm font-medium mb-2 text-slate-200">{isZh ? '主旨' : 'Subject'}</label>
                                         <input
                                             type="text"
                                             id="subject"
@@ -149,7 +149,7 @@ export default function Contact() {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="message" className="block text-sm font-medium mb-2">{isZh ? '訊息' : 'Message'}</label>
+                                        <label htmlFor="message" className="block text-sm font-medium mb-2 text-slate-200">{isZh ? '訊息' : 'Message'}</label>
                                         <textarea
                                             id="message"
                                             rows={4}

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // API基礎URL
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const WS_BASE_URL = API_BASE_URL.replace('http://', 'ws://').replace('https://', 'wss://');
 
 // 創建axios實例 - 不同端點使用不同超時時間
 const api = axios.create({
@@ -208,6 +209,16 @@ export const apiService = {
   getVideoUrl(videoId: string) {
     return `${API_BASE_URL}/play/${videoId}`;
   },
+
+  // 獲取 WebSocket 分析 URL (starts analysis + monitors)
+  getAnalysisWebSocketUrl(videoId: string) {
+    return `${WS_BASE_URL}/ws/analysis/${videoId}`;
+  },
+
+  // 獲取 WebSocket 進度監控 URL (monitors only, does NOT start analysis)
+  getProgressWebSocketUrl(videoId: string) {
+    return `${WS_BASE_URL}/ws/progress/${videoId}`;
+  },
 };
 
 // 導出便捷函數
@@ -223,5 +234,9 @@ export const deleteVideo = apiService.deleteVideo;
 export const setJerseyMapping = apiService.setJerseyMapping;
 export const getJerseyMappings = apiService.getJerseyMappings;
 export const deleteJerseyMapping = apiService.deleteJerseyMapping;
+export const getAnalysisWebSocketUrl = apiService.getAnalysisWebSocketUrl;
+export const getProgressWebSocketUrl = apiService.getProgressWebSocketUrl;
 
 export default apiService;
+
+

@@ -28,12 +28,37 @@ sys.path.append(str(Path(__file__).parent.parent))
 class VolleyballAnalyzer:
     """排球分析器 - 整合球追蹤和動作識別"""
     
+    @staticmethod
+    def get_optimal_device() -> str:
+        """
+        自動檢測最佳運算設備
+        
+        優先級: CUDA (NVIDIA GPU) > MPS (Apple Silicon) > CPU
+        
+        Returns:
+            最佳設備名稱 ('cuda', 'mps', 或 'cpu')
+        """
+        # 檢查 CUDA (NVIDIA GPU)
+        if torch.cuda.is_available():
+            device_name = torch.cuda.get_device_name(0)
+            print(f"🚀 檢測到 NVIDIA GPU: {device_name}")
+            return "cuda"
+        
+        # 檢查 MPS (Apple Silicon)
+        if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            print("🚀 檢測到 Apple Silicon MPS 加速")
+            return "mps"
+        
+        # 回退到 CPU
+        print("💻 使用 CPU 運算")
+        return "cpu"
+    
     def __init__(self, 
                  ball_model_path: str = None,
                  action_model_path: str = None,
                  player_model_path: str = None,
                  jersey_number_model_path: str = None,
-                 device: str = "cpu"):
+                 device: str = None):
         """
         初始化分析器
         
@@ -42,9 +67,15 @@ class VolleyballAnalyzer:
             action_model_path: 動作識別模型路徑 (YOLO格式)
             player_model_path: 球員偵測模型路徑 (YOLO格式)
             jersey_number_model_path: 球衣號碼檢測模型路徑 (YOLO格式)
-            device: 運行設備 ('cpu', 'cuda', 'mps')
+            device: 運行設備 ('cpu', 'cuda', 'mps')，設為 None 時自動檢測最佳設備
         """
-        self.device = device
+        # 自動檢測最佳設備（如果未指定）
+        if device is None:
+            self.device = self.get_optimal_device()
+        else:
+            self.device = device
+            print(f"📱 使用指定設備: {self.device}")
+        
         self.ball_model = None
         self.action_model = None
         self.player_model = None
@@ -711,7 +742,7 @@ class VolleyballAnalyzer:
     
     def _detect_jersey_number_yolo(self, frame: np.ndarray, bbox: List[float], track_id: int = None) -> Optional[int]:
         """
-        使用 YOLOv8 模型檢測球衣號碼
+        使用 YOLOv8 模型檢測球衣號碼 - 多角度版本（前胸 + 後背）
         
         Args:
             frame: 完整幀圖像
@@ -722,87 +753,117 @@ class VolleyballAnalyzer:
             球衣號碼（如果識別成功），否則None
         """
         try:
-            # 提取玩家區域（主要關注上半身，球衣號碼通常在胸部）
             x1, y1, x2, y2 = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
             height = y2 - y1
+            width = x2 - x1
             
-            # 提取上半身區域（上半部分，球衣號碼在這裡）
-            roi_top = max(0, y1)
-            roi_bottom = min(frame.shape[0], y1 + int(height * 0.6))  # 上半身60%
-            roi_left = max(0, x1)
-            roi_right = min(frame.shape[1], x2)
+            # 定義多個 ROI 區域進行偵測
+            roi_configs = [
+                # 前胸區域（上半身 60%）
+                {
+                    'name': 'front',
+                    'top': max(0, y1),
+                    'bottom': min(frame.shape[0], y1 + int(height * 0.6)),
+                    'left': max(0, x1),
+                    'right': min(frame.shape[1], x2),
+                    'weight': 1.0
+                },
+                # 後背區域（稍微往下，覆蓋更大面積，因為背號通常較大）
+                {
+                    'name': 'back',
+                    'top': max(0, y1 + int(height * 0.1)),
+                    'bottom': min(frame.shape[0], y1 + int(height * 0.7)),
+                    'left': max(0, x1 - int(width * 0.05)),
+                    'right': min(frame.shape[1], x2 + int(width * 0.05)),
+                    'weight': 1.2  # 後背號碼通常更大更清晰，給予較高權重
+                }
+            ]
             
-            if roi_bottom <= roi_top or roi_right <= roi_left:
-                return None
+            # 收集所有區域的偵測結果
+            all_results = []
             
-            roi = frame[roi_top:roi_bottom, roi_left:roi_right].copy()
+            for config in roi_configs:
+                roi_top, roi_bottom = config['top'], config['bottom']
+                roi_left, roi_right = config['left'], config['right']
+                
+                if roi_bottom <= roi_top or roi_right <= roi_left:
+                    continue
+                
+                roi = frame[roi_top:roi_bottom, roi_left:roi_right].copy()
+                
+                if roi.size == 0:
+                    continue
+                
+                # 使用 YOLOv8 模型檢測數字
+                results = self.jersey_number_yolo_model(roi, verbose=False, conf=0.15, iou=0.4)
+                
+                digit_detections = []
+                for result in results:
+                    boxes = result.boxes
+                    if boxes is not None:
+                        for box in boxes:
+                            xyxy = box.xyxy[0].cpu().numpy()
+                            conf = float(box.conf[0].cpu().numpy())
+                            class_id = int(box.cls[0].cpu().numpy())
+                            
+                            if hasattr(self.jersey_number_yolo_model, 'names'):
+                                class_name = self.jersey_number_yolo_model.names.get(class_id, str(class_id))
+                            else:
+                                class_name = str(class_id)
+                            
+                            digit = None
+                            try:
+                                if class_name.isdigit():
+                                    digit = int(class_name)
+                                elif 0 <= class_id <= 9:
+                                    digit = class_id
+                            except:
+                                pass
+                            
+                            if digit is not None and 0 <= digit <= 9:
+                                digit_detections.append({
+                                    'digit': digit,
+                                    'bbox': [float(xyxy[0]), float(xyxy[1]), float(xyxy[2]), float(xyxy[3])],
+                                    'confidence': conf * config['weight'],  # 應用區域權重
+                                    'center_x': float((xyxy[0] + xyxy[2]) / 2)
+                                })
+                
+                if digit_detections:
+                    merged_number = self._merge_digit_detections(digit_detections)
+                    if merged_number is not None and 1 <= merged_number <= 99:
+                        avg_conf = sum(d['confidence'] for d in digit_detections) / len(digit_detections)
+                        all_results.append({
+                            'number': merged_number,
+                            'confidence': avg_conf,
+                            'region': config['name']
+                        })
             
-            if roi.size == 0:
-                return None
-            
-            # 使用 YOLOv8 模型檢測數字（降低置信度閾值以提高檢測率）
-            results = self.jersey_number_yolo_model(roi, verbose=False, conf=0.15, iou=0.4)
-            
-            # 收集所有數字檢測結果
-            digit_detections = []
-            for result in results:
-                boxes = result.boxes
-                if boxes is not None:
-                    for box in boxes:
-                        xyxy = box.xyxy[0].cpu().numpy()
-                        conf = float(box.conf[0].cpu().numpy())
-                        class_id = int(box.cls[0].cpu().numpy())
-                        
-                        # 獲取數字類別名稱
-                        if hasattr(self.jersey_number_yolo_model, 'names'):
-                            class_name = self.jersey_number_yolo_model.names.get(class_id, str(class_id))
-                        else:
-                            class_name = str(class_id)
-                        
-                        # 嘗試從類別名稱提取數字
-                        digit = None
-                        try:
-                            # 如果類別名稱是數字（例如 "0", "1", "2", ...）
-                            if class_name.isdigit():
-                                digit = int(class_name)
-                            # 如果類別ID直接對應數字（0-9）
-                            elif 0 <= class_id <= 9:
-                                digit = class_id
-                        except:
-                            pass
-                        
-                        if digit is not None and 0 <= digit <= 9:
-                            digit_detections.append({
-                                'digit': digit,
-                                'bbox': [float(xyxy[0]), float(xyxy[1]), float(xyxy[2]), float(xyxy[3])],
-                                'confidence': conf,
-                                'center_x': float((xyxy[0] + xyxy[2]) / 2)
-                            })
-            
-            # 合併數字檢測結果成完整號碼
-            if digit_detections:
-                merged_number = self._merge_digit_detections(digit_detections)
-                if merged_number is not None and 1 <= merged_number <= 99:
-                    # 多幀融合：記錄歷史並投票
-                    if track_id is not None:
-                        if track_id not in self.track_id_to_jersey_history:
-                            self.track_id_to_jersey_history[track_id] = []
-                        
-                        self.track_id_to_jersey_history[track_id].append(merged_number)
-                        
-                        # 只保留最近50次識別結果
-                        if len(self.track_id_to_jersey_history[track_id]) > 50:
-                            self.track_id_to_jersey_history[track_id] = self.track_id_to_jersey_history[track_id][-50:]
-                        
-                        # 投票：返回最常見的號碼（降低閾值以提高檢測率）
-                        from collections import Counter
-                        counter = Counter(self.track_id_to_jersey_history[track_id])
-                        if counter:
-                            most_common = counter.most_common(1)[0]
-                            if most_common[1] >= 1:  # 至少出現1次就可以使用（提高檢測率）
-                                return most_common[0]
+            # 從多區域結果中選擇最佳結果
+            if all_results:
+                # 按置信度排序，選擇最高的
+                best_result = max(all_results, key=lambda x: x['confidence'])
+                merged_number = best_result['number']
+                
+                # 多幀融合：記錄歷史並投票
+                if track_id is not None:
+                    if track_id not in self.track_id_to_jersey_history:
+                        self.track_id_to_jersey_history[track_id] = []
                     
-                    return merged_number
+                    self.track_id_to_jersey_history[track_id].append(merged_number)
+                    
+                    # 只保留最近50次識別結果
+                    if len(self.track_id_to_jersey_history[track_id]) > 50:
+                        self.track_id_to_jersey_history[track_id] = self.track_id_to_jersey_history[track_id][-50:]
+                    
+                    # 投票：返回最常見的號碼
+                    from collections import Counter
+                    counter = Counter(self.track_id_to_jersey_history[track_id])
+                    if counter:
+                        most_common = counter.most_common(1)[0]
+                        if most_common[1] >= 1:
+                            return most_common[0]
+                
+                return merged_number
             
             return None
             
@@ -1103,7 +1164,128 @@ class VolleyballAnalyzer:
                 filtered.append(curr_point)
             # 如果不符合條件，跳過這個點（視為誤檢測）
         
-        return filtered
+        # 應用平滑處理
+        smoothed = self._smooth_ball_trajectory(filtered)
+        
+        return smoothed
+    
+    def _smooth_ball_trajectory(self, trajectory: List[Dict], window_size: int = 5) -> List[Dict]:
+        """
+        使用移動平均平滑球的軌跡
+        
+        Args:
+            trajectory: 過濾後的軌跡點列表
+            window_size: 平滑窗口大小（奇數）
+            
+        Returns:
+            平滑後的軌跡點列表
+        """
+        if len(trajectory) < window_size:
+            return trajectory
+        
+        smoothed = []
+        half_window = window_size // 2
+        
+        for i in range(len(trajectory)):
+            # 確定窗口範圍
+            start_idx = max(0, i - half_window)
+            end_idx = min(len(trajectory), i + half_window + 1)
+            
+            # 提取窗口內的點
+            window_points = trajectory[start_idx:end_idx]
+            
+            # 計算加權平均（中心點權重最高）
+            weights = []
+            centers_x = []
+            centers_y = []
+            
+            for j, point in enumerate(window_points):
+                center = point.get("center", [0, 0])
+                # 使用高斯權重：距離中心越近權重越高
+                distance_to_center = abs(j - (i - start_idx))
+                weight = np.exp(-0.5 * (distance_to_center / (half_window + 1)) ** 2)
+                weights.append(weight)
+                centers_x.append(center[0])
+                centers_y.append(center[1])
+            
+            # 計算加權平均
+            total_weight = sum(weights)
+            if total_weight > 0:
+                smoothed_x = sum(w * x for w, x in zip(weights, centers_x)) / total_weight
+                smoothed_y = sum(w * y for w, y in zip(weights, centers_y)) / total_weight
+            else:
+                smoothed_x = trajectory[i]["center"][0]
+                smoothed_y = trajectory[i]["center"][1]
+            
+            # 創建平滑後的點（保留原始其他屬性）
+            smoothed_point = trajectory[i].copy()
+            smoothed_point["center"] = [int(smoothed_x), int(smoothed_y)]
+            
+            # 更新 bbox（如果存在）
+            if "bbox" in smoothed_point:
+                original_bbox = smoothed_point["bbox"]
+                original_center = trajectory[i]["center"]
+                dx = smoothed_x - original_center[0]
+                dy = smoothed_y - original_center[1]
+                smoothed_point["bbox"] = [
+                    original_bbox[0] + dx,
+                    original_bbox[1] + dy,
+                    original_bbox[2] + dx,
+                    original_bbox[3] + dy
+                ]
+            
+            smoothed.append(smoothed_point)
+        
+        return smoothed
+    
+    def _interpolate_missing_frames(self, trajectory: List[Dict], fps: float) -> List[Dict]:
+        """
+        插值缺失的幀（可選功能，用於填補檢測空隙）
+        
+        Args:
+            trajectory: 軌跡點列表
+            fps: 視頻幀率
+            
+        Returns:
+            插值後的軌跡點列表
+        """
+        if len(trajectory) < 2:
+            return trajectory
+        
+        interpolated = [trajectory[0]]
+        
+        for i in range(1, len(trajectory)):
+            prev_point = trajectory[i - 1]
+            curr_point = trajectory[i]
+            
+            prev_frame = prev_point.get("frame", 0)
+            curr_frame = curr_point.get("frame", 0)
+            
+            # 如果缺失幀數不超過 10 幀，進行線性插值
+            frame_gap = curr_frame - prev_frame
+            if 1 < frame_gap <= 10:
+                prev_center = prev_point.get("center", [0, 0])
+                curr_center = curr_point.get("center", [0, 0])
+                
+                for j in range(1, frame_gap):
+                    # 線性插值
+                    t = j / frame_gap
+                    interp_x = int(prev_center[0] + t * (curr_center[0] - prev_center[0]))
+                    interp_y = int(prev_center[1] + t * (curr_center[1] - prev_center[1]))
+                    interp_frame = prev_frame + j
+                    interp_timestamp = prev_point.get("timestamp", 0) + (j / fps)
+                    
+                    interpolated.append({
+                        "frame": interp_frame,
+                        "timestamp": interp_timestamp,
+                        "center": [interp_x, interp_y],
+                        "confidence": 0.0,  # 標記為插值點
+                        "interpolated": True
+                    })
+            
+            interpolated.append(curr_point)
+        
+        return interpolated
     
     def analyze_video(self, video_path: str, output_path: str = None, progress_callback=None) -> dict:
         """

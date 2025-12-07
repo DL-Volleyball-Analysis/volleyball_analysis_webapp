@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getVideoUrl, getAnalysisResults, getVideo, getAnalysisStatus, setJerseyMapping, getJerseyMappings } from '../services/api';
+import { getVideoUrl, getAnalysisResults, getVideo, getAnalysisStatus, setJerseyMapping, getJerseyMappings, getProgressWebSocketUrl } from '../services/api';
 import { EventTimeline } from './EventTimeline';
 import { PlayerHeatmap } from './PlayerHeatmap';
 import { BoundingBoxes } from './BoundingBoxes';
@@ -14,10 +14,10 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   const params = useParams();
   // 優先使用 props 中的 videoId，如果沒有則使用路由參數
   const effectiveId = videoId || params.videoId || '';
-  
+
   console.log('VideoPlayer render:', { videoId, paramsVideoId: params.videoId, effectiveId });
   const [result, setResult] = useState<any>(null);
-  const [status, setStatus] = useState<'idle'|'loading'|'processing'|'completed'|'failed'|'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'processing' | 'completed' | 'failed' | 'error'>('idle');
   const [error, setError] = useState<string>('');
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [showHeatmap, setShowHeatmap] = useState<boolean>(false);
@@ -33,6 +33,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   const [jerseyMappings, setJerseyMappings] = useState<Record<string, any>>({});  // 球衣號碼映射
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
 
   // Load player names from localStorage
   useEffect(() => {
@@ -58,18 +59,18 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
 
   useEffect(() => {
     console.log('VideoPlayer useEffect triggered:', { videoId, paramsVideoId: params.videoId, effectiveId });
-    
+
     if (!effectiveId) {
       console.error('VideoPlayer: No effectiveId, cannot load video');
       setStatus('error');
       setError('未提供視頻 ID');
       return;
     }
-    
+
     console.log('VideoPlayer: Starting to load video:', effectiveId);
     let isMounted = true;
     let pollInterval: NodeJS.Timeout | null = null;
-    
+
     const load = async () => {
       setStatus('loading');
       setError('');
@@ -81,44 +82,90 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
         if (meta.status !== 'completed') {
           setStatus(meta.status as any);
           setResult(null);
-          
-          // 如果狀態是 processing，開始輪詢進度
-          if (meta.status === 'processing' && meta.task_id) {
+
+          // 如果狀態是 processing，使用 WebSocket 平滑追蹤進度
+          // 使用 /ws/progress 端點只監控進度，不會啟動新分析
+          if (meta.status === 'processing') {
             setProgress(5); // 初始進度
-            pollInterval = setInterval(async () => {
+
+            const wsUrl = getProgressWebSocketUrl(effectiveId);
+            console.log('📊 VideoPlayer: Connecting to progress WebSocket:', wsUrl);
+
+            const ws = new WebSocket(wsUrl);
+            wsRef.current = ws;
+
+            ws.onopen = () => {
+              console.log('✅ VideoPlayer: Progress WebSocket connected');
+            };
+
+            ws.onmessage = async (event) => {
               try {
-                const taskStatus = await getAnalysisStatus(meta.task_id);
+                const data = JSON.parse(event.data);
+                console.log('📡 VideoPlayer: Progress update:', data);
+
                 if (!isMounted) return;
-                
-                setProgress(taskStatus.progress || 0);
-                
-                // 如果任務完成，重新加載視頻信息
-                if (taskStatus.status === 'completed') {
-                  if (pollInterval) {
-                    clearInterval(pollInterval);
-                    pollInterval = null;
-                  }
-                  // 重新加載結果
+
+                if (data.status === 'processing' || data.status === 'started') {
+                  setProgress(data.progress || 0);
+                } else if (data.status === 'completed') {
+                  console.log('✅ VideoPlayer: Analysis completed');
+                  ws.close();
+                  // Load results
                   const res = await getAnalysisResults(effectiveId);
                   if (isMounted) {
                     setResult(res);
                     setStatus('completed');
                     setProgress(100);
                   }
-                } else if (taskStatus.status === 'failed') {
-                  if (pollInterval) {
-                    clearInterval(pollInterval);
-                    pollInterval = null;
-                  }
+                } else if (data.status === 'failed') {
+                  console.log('❌ VideoPlayer: Analysis failed');
+                  ws.close();
                   if (isMounted) {
                     setStatus('failed');
-                    setError(taskStatus.error || 'Analysis failed');
+                    setError(data.error || 'Analysis failed');
                   }
                 }
               } catch (e) {
-                console.error('Failed to poll progress:', e);
+                console.error('Failed to parse progress message:', e);
               }
-            }, 1000); // 每秒輪詢一次
+            };
+
+            ws.onerror = (error) => {
+              console.error('⚠️ VideoPlayer: WebSocket error, falling back to polling:', error);
+              ws.close();
+              // Fallback to HTTP polling
+              if (meta.task_id) {
+                pollInterval = setInterval(async () => {
+                  try {
+                    const taskStatus = await getAnalysisStatus(meta.task_id);
+                    if (!isMounted) return;
+                    setProgress(taskStatus.progress || 0);
+                    if (taskStatus.status === 'completed') {
+                      clearInterval(pollInterval!);
+                      const res = await getAnalysisResults(effectiveId);
+                      if (isMounted) {
+                        setResult(res);
+                        setStatus('completed');
+                        setProgress(100);
+                      }
+                    } else if (taskStatus.status === 'failed') {
+                      clearInterval(pollInterval!);
+                      if (isMounted) {
+                        setStatus('failed');
+                        setError(taskStatus.error || 'Analysis failed');
+                      }
+                    }
+                  } catch (e) {
+                    console.error('Poll error:', e);
+                  }
+                }, 2000);
+              }
+            };
+
+            ws.onclose = () => {
+              console.log('📊 VideoPlayer: Progress WebSocket closed');
+              wsRef.current = null;
+            };
           }
           return;
         }
@@ -129,7 +176,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
         setResult(res);
         setStatus('completed');
         setProgress(100);
-        
+
         // 載入球衣號碼映射
         try {
           const mappingsRes = await getJerseyMappings(effectiveId);
@@ -145,10 +192,14 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
       }
     };
     load();
-    return () => { 
+    return () => {
       isMounted = false;
       if (pollInterval) {
         clearInterval(pollInterval);
+      }
+      if (wsRef.current) {
+        wsRef.current.close();
+        wsRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,13 +222,13 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   // 確認標記球衣號碼
   const handleConfirmJerseyNumber = async (jerseyNumber: number) => {
     if (!selectedPlayer || !effectiveId || !result) return;
-    
+
     try {
       const trackId = selectedPlayer.id || selectedPlayer.stable_id;
       const video_info = result.video_info || {};
       const fps = video_info.fps || 30;
       const currentFrame = Math.round(currentTime * fps);
-      
+
       await setJerseyMapping(
         effectiveId,
         trackId,
@@ -185,7 +236,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
         currentFrame,
         selectedPlayer.bbox || []
       );
-      
+
       // 更新本地映射狀態
       setJerseyMappings(prev => ({
         ...prev,
@@ -195,7 +246,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
           bbox: selectedPlayer.bbox
         }
       }));
-      
+
       setSelectedPlayer(null);
     } catch (error) {
       console.error('Failed to set jersey mapping:', error);
@@ -207,10 +258,10 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   useEffect(() => {
     const el = videoRef.current;
     if (!el) return;
-    
+
     let animationFrameId: number | null = null;
     let lastTime = 0;
-    
+
     const onTimeUpdate = () => {
       const newTime = el.currentTime || 0;
       // Update more frequently for smoother rendering
@@ -219,13 +270,13 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
         lastTime = newTime;
       }
     };
-    
+
     const onSeeked = () => {
       const newTime = el.currentTime || 0;
       setCurrentTime(newTime);
       lastTime = newTime;
     };
-    
+
     // Use requestAnimationFrame for smoother updates during playback
     const updateLoop = () => {
       if (el && !el.paused) {
@@ -237,16 +288,16 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
       }
       animationFrameId = requestAnimationFrame(updateLoop);
     };
-    
+
     el.addEventListener('timeupdate', onTimeUpdate);
     el.addEventListener('seeked', onSeeked);
-    
+
     const handlePlay = () => {
       if (animationFrameId === null) {
         animationFrameId = requestAnimationFrame(updateLoop);
       }
     };
-    
+
     const handlePause = () => {
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
@@ -254,15 +305,15 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
       }
       onTimeUpdate(); // Update one last time on pause
     };
-    
+
     el.addEventListener('play', handlePlay);
     el.addEventListener('pause', handlePause);
-    
+
     // Start update loop if video is already playing
     if (!el.paused) {
       animationFrameId = requestAnimationFrame(updateLoop);
     }
-    
+
     return () => {
       el.removeEventListener('timeupdate', onTimeUpdate);
       el.removeEventListener('seeked', onSeeked);
@@ -315,8 +366,8 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
     if (!container) return;
 
     try {
-      if (!document.fullscreenElement && !(document as any).webkitFullscreenElement && 
-          !(document as any).mozFullScreenElement && !(document as any).msFullscreenElement) {
+      if (!document.fullscreenElement && !(document as any).webkitFullscreenElement &&
+        !(document as any).mozFullScreenElement && !(document as any).msFullscreenElement) {
         // Enter fullscreen
         if (container.requestFullscreen) {
           await container.requestFullscreen();
@@ -361,28 +412,51 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   if (status === 'processing') {
     return (
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-2xl shadow-lg p-8">
-          <div className="flex items-start gap-4">
-            <Clock className="w-8 h-8 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <h3 className="text-yellow-900 font-semibold text-lg mb-2">Analysis in Progress</h3>
-              <p className="text-yellow-800 mb-4">Your video is being analyzed. This may take a few minutes. Please check back later.</p>
-              
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-yellow-900">Progress</span>
-                  <span className="text-sm font-semibold text-yellow-900">{Math.round(progress)}%</span>
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {/* Header with gradient */}
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Analyzing Video
+            </h1>
+            <p className="text-blue-100 text-lg">
+              AI is processing your volleyball match for ball tracking and action recognition
+            </p>
+          </div>
+
+          <div className="p-8">
+            {/* Progress Section */}
+            <div className="relative border-2 border-dashed rounded-xl p-16 text-center border-blue-300 bg-blue-50">
+              <div className="flex flex-col items-center">
+                <div className="mb-6">
+                  <Loader2 className="h-12 w-12 text-blue-600 animate-spin" />
                 </div>
-                <div className="w-full bg-yellow-200 rounded-full h-3 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-yellow-500 to-amber-600 h-full rounded-full transition-all duration-300 ease-out"
-                    style={{ width: `${progress}%` }}
-                  />
+
+                <div className="space-y-3">
+                  <p className="text-xl font-semibold text-gray-900">
+                    Analyzing... {progress.toFixed(1)}%
+                  </p>
+
+                  <div className="mt-6 space-y-3">
+                    <div className="w-80 mx-auto bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 h-full rounded-full transition-all duration-300 shadow-lg"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">
+                      {Math.round(progress)}% complete
+                    </p>
+                  </div>
                 </div>
               </div>
-              
-              <Link to="/library" className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">
+            </div>
+
+            {/* Back to Library Button */}
+            <div className="mt-6 flex justify-center">
+              <Link
+                to="/library"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg font-medium"
+              >
                 <ArrowLeft className="w-4 h-4" /> Back to Library
               </Link>
             </div>
@@ -467,7 +541,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
           <h2 className={`text-xl font-semibold ${isFullscreen ? 'text-white' : 'text-gray-900'}`}>Video Analysis</h2>
           <p className={`text-sm mt-1 ${isFullscreen ? 'text-gray-300' : 'text-gray-600'}`}>Interactive timeline with event markers and player tracking</p>
         </div>
-        
+
         <div className={`p-6 ${isFullscreen ? 'flex-1 overflow-auto' : ''}`}>
           {/* Controls - Always visible */}
           <div className={`flex items-center gap-4 mb-4 pb-4 border-b border-gray-200 flex-wrap ${isFullscreen ? 'border-gray-700' : ''}`}>
@@ -583,13 +657,13 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
                         const videoHeight = video_info.height || video.videoHeight || rect.height;
                         const scaleX = videoWidth / rect.width;
                         const scaleY = videoHeight / rect.height;
-                        
+
                         const clickX = (e.clientX - rect.left) * scaleX;
                         const clickY = (e.clientY - rect.top) * scaleY;
-                        
+
                         const currentFrame = Math.round(currentTime * fps);
                         const players_tracking = result.players_tracking || [];
-                        
+
                         const currentTrack = players_tracking.find(
                           (track: any) => track.frame === currentFrame
                         ) || players_tracking.reduce((closest: any, track: any) => {
@@ -598,7 +672,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
                           const trackDiff = Math.abs(track.frame - currentFrame);
                           return trackDiff < closestDiff ? track : closest;
                         }, null as any);
-                        
+
                         // 檢查是否點擊在玩家框內
                         if (currentTrack && currentTrack.players && Math.abs(currentTrack.frame - currentFrame) <= 15) {
                           for (const player of currentTrack.players) {
@@ -618,7 +692,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
                     onError={(e) => {
                       console.error('Video load error:', e);
                       const video = e.target as HTMLVideoElement;
-                      const errorMsg = video.error 
+                      const errorMsg = video.error
                         ? `Code ${video.error.code}: ${video.error.message || 'Unknown error'}`
                         : 'Unknown error';
                       console.error('Video error details:', {
@@ -669,9 +743,9 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
               )}
               {/* Heatmap Overlay (optional, less intrusive) */}
               {showHeatmap && result && (
-                <PlayerHeatmap 
-                  playerTracks={players_tracking || []} 
-                  videoSize={{ width: video_info?.width || 640, height: video_info?.height || 360 }} 
+                <PlayerHeatmap
+                  playerTracks={players_tracking || []}
+                  videoSize={{ width: video_info?.width || 640, height: video_info?.height || 360 }}
                   enabled={showHeatmap}
                   currentTime={currentTime}
                   fps={fps}
