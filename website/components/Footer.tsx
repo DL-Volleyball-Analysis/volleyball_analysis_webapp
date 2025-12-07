@@ -2,6 +2,7 @@
 
 import { Github } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Link from "next/link";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -51,12 +52,13 @@ export function Footer() {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
           <div>© 2025 VolleyVision AI. {t.footer.rights}</div>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="/privacy" className="hover:text-white transition-colors">{t.footer.privacy}</a>
-            <a href="/terms" className="hover:text-white transition-colors">{t.footer.terms}</a>
-            <a href="/contact" className="hover:text-white transition-colors">{t.footer.contact}</a>
+            <Link href="/privacy" className="hover:text-white transition-colors">{t.footer.privacy}</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">{t.footer.terms}</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">{t.footer.contact}</Link>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+
