@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <nav className="fixed w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
@@ -31,6 +31,12 @@ export default function Navigation() {
               <a href="#demo" className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition">
                 {t.nav.demo}
               </a>
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'zh-TW' : 'en')}
+                className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition border border-slate-600 hover:border-blue-400"
+              >
+                {language === 'en' ? '中文' : 'EN'}
+              </button>
               <a
                 href="https://github.com/itsYoga"
                 target="_blank"
@@ -74,6 +80,12 @@ export default function Navigation() {
               <a href="#demo" className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium">
                 {t.nav.demo}
               </a>
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'zh-TW' : 'en')}
+                className="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium text-left border border-slate-600 hover:border-blue-400"
+              >
+                {language === 'en' ? '中文' : 'EN'}
+              </button>
               <a
                 href="https://github.com/itsYoga"
                 target="_blank"

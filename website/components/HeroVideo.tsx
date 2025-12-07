@@ -64,6 +64,18 @@ export const HeroVideo = forwardRef<HeroVideoHandle>((props, ref) => {
 
     const shouldFloat = isFloating && !isClosed;
 
+    const handleFloatingClick = () => {
+        if (videoRef.current) {
+            if (videoRef.current.requestFullscreen) {
+                videoRef.current.requestFullscreen();
+            } else if ((videoRef.current as any).webkitRequestFullscreen) {
+                (videoRef.current as any).webkitRequestFullscreen();
+            } else if ((videoRef.current as any).msRequestFullscreen) {
+                (videoRef.current as any).msRequestFullscreen();
+            }
+        }
+    };
+
     return (
         <>
             {/* Placeholder to maintain layout space */}
@@ -73,24 +85,33 @@ export const HeroVideo = forwardRef<HeroVideoHandle>((props, ref) => {
                     className={`
             transition-all duration-500 ease-in-out
             ${shouldFloat
-                            ? "fixed bottom-6 right-6 z-50 w-80 md:w-96 rounded-xl shadow-2xl border-4 border-white/20"
+                            ? "fixed bottom-6 right-6 z-50 w-80 md:w-96 rounded-xl shadow-2xl border-4 border-white/20 cursor-pointer group"
                             : "absolute inset-0 w-full h-full rounded-2xl shadow-2xl border-4 border-white/20"
                         }
             overflow-hidden bg-black
           `}
+                    onClick={shouldFloat ? handleFloatingClick : undefined}
                 >
                     {shouldFloat && (
-                        <Button
-                            variant="secondary"
-                            size="icon"
-                            className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full opacity-0 hover:opacity-100 transition-opacity"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setIsClosed(true);
-                            }}
-                        >
-                            <X className="h-4 w-4" />
-                        </Button>
+                        <>
+                            <Button
+                                variant="secondary"
+                                size="icon"
+                                className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsClosed(true);
+                                }}
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                            {/* Fullscreen hint */}
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                                <div className="bg-blue-600/90 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm font-medium shadow-lg">
+                                    Click for fullscreen
+                                </div>
+                            </div>
+                        </>
                     )}
 
                     <video
@@ -101,8 +122,7 @@ export const HeroVideo = forwardRef<HeroVideoHandle>((props, ref) => {
                         muted
                         loop
                         playsInline
-                        controls={!shouldFloat} // Hide controls when floating to look cleaner, or keep them? User said "kept playing". Controls might be useful. Let's keep controls or maybe just play/pause on click.
-                    // Let's keep controls for hero, maybe simple click for floating.
+                        controls={!shouldFloat}
                     />
 
                     {/* Overlay for Hero mode only */}

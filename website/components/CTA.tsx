@@ -1,8 +1,13 @@
+"use client";
+
 import { Button } from "./ui/button";
 import { ArrowRight, Github } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function CTA() {
+  const { language } = useLanguage();
+  const isZh = language === 'zh-TW';
+
   return (
     <section className="py-24 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -13,11 +18,12 @@ export function CTA() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-white mb-6 text-4xl font-bold">
-            Ready to Transform Your Volleyball Analysis?
+            {isZh ? '準備好轉變您的排球分析了嗎？' : 'Ready to Transform Your Volleyball Analysis?'}
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join teams and coaches already using our AI-powered platform to gain competitive advantages
-            and improve player performance.
+            {isZh
+              ? '加入已經在使用我們 AI 驅動平台的球隊和教練，獲得競爭優勢並提升球員表現。'
+              : 'Join teams and coaches already using our AI-powered platform to gain competitive advantages and improve player performance.'}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button
@@ -26,7 +32,7 @@ export function CTA() {
               className="gap-2"
               onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
             >
-              Get Started Free
+              {isZh ? '免費開始使用' : 'Get Started Free'}
               <ArrowRight className="w-5 h-5" />
             </Button>
             <Button
@@ -36,16 +42,16 @@ export function CTA() {
               onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
             >
               <Github className="w-5 h-5" />
-              View on GitHub
+              {isZh ? '在 GitHub 查看' : 'View on GitHub'}
             </Button>
           </div>
 
           <div className="mt-12 flex items-center justify-center gap-8 text-white/80">
             <div className="flex items-center gap-2">
-              <span className="font-semibold">Free & Open Source</span>
+              <span className="font-semibold">{isZh ? '免費開源' : 'Free & Open Source'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold">No Credit Card</span>
+              <span className="font-semibold">{isZh ? '無需信用卡' : 'No Credit Card'}</span>
             </div>
           </div>
         </div>

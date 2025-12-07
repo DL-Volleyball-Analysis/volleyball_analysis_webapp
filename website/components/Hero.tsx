@@ -1,10 +1,14 @@
+"use client";
+
 import { Button } from "./ui/button";
 import { Play, ArrowRight } from "lucide-react";
 import { HeroVideo, HeroVideoHandle } from "./HeroVideo";
 import { useRef } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Hero() {
   const videoRef = useRef<HeroVideoHandle>(null);
+  const { t } = useLanguage();
 
   const handleWatchDemo = () => {
     if (videoRef.current) {
@@ -13,49 +17,22 @@ export function Hero() {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
-      {/* Navigation */}
-      <nav className="relative z-10 container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-blue-600 font-bold text-xl">V</span>
-            </div>
-            <span className="text-white">VolleyAnalytics</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-white/90 hover:text-white transition-colors">
-              Features
-            </a>
-            <a href="#demo" className="text-white/90 hover:text-white transition-colors">
-              Demo
-            </a>
-            <a href="#how-it-works" className="text-white/90 hover:text-white transition-colors">
-              How It Works
-            </a>
-            <Button variant="secondary" size="sm">
-              Get Started
-            </Button>
-          </div>
-        </div>
-      </nav>
-
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 pt-20">
       {/* Hero Content */}
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span className="text-white/90 text-sm">AI-Powered Volleyball Analysis</span>
+              <span className="text-white/90 text-sm">{t.hero.badge}</span>
             </div>
 
             <h1 className="text-white mb-6">
-              Transform Your Volleyball Game with Advanced Video Analysis
+              {t.hero.title}
             </h1>
 
             <p className="text-xl text-white/90 mb-8">
-              Leverage cutting-edge computer vision and AI to analyze player movements, track ball trajectories,
-              and gain actionable insights from your volleyball matches.
+              {t.hero.subtitle}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -66,7 +43,7 @@ export function Hero() {
                 onClick={handleWatchDemo}
               >
                 <Play className="w-5 h-5" />
-                Watch Demo
+                {t.hero.watchDemo}
               </Button>
               <Button
                 size="lg"
@@ -74,7 +51,7 @@ export function Hero() {
                 className="gap-2 bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20"
                 onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
               >
-                Get Started
+                {t.hero.getStarted}
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </div>
