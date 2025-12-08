@@ -1124,54 +1124,175 @@ class VolleyballAnalyzer:
     
     def _filter_ball_trajectory(self, trajectory: List[Dict]) -> List[Dict]:
         """
-        過濾球追蹤誤檢測，移除不在連續軌跡上的點
-        使用速度閾值和距離閾值來判斷是否為誤檢測
+        過濾球追蹤誤檢測，使用基於物理的拋物線運動模型
+        
+        改進策略：
+        1. 使用滑動窗口進行局部拋物線擬合
+        2. 檢測與擬合曲線偏離過大的異常點
+        3. 移除異常點並使用物理模型預測位置
+        4. 應用平滑處理
         """
-        if len(trajectory) <= 2:
+        if len(trajectory) <= 3:
             return trajectory
         
-        filtered = [trajectory[0]]  # 保留第一個點
+        # Step 1: 基本過濾 - 移除明顯的異常值（速度過快）
+        basic_filtered = self._basic_velocity_filter(trajectory)
         
-        for i in range(1, len(trajectory)):
-            prev_point = trajectory[i - 1]
-            curr_point = trajectory[i]
-            
-            # 計算時間差（秒）
-            time_diff = curr_point.get("timestamp", 0) - prev_point.get("timestamp", 0)
-            if time_diff <= 0:
-                # 如果時間差為0或負數，跳過（可能是同一幀）
-                continue
-            
-            # 計算距離（像素）
-            prev_center = prev_point.get("center", [0, 0])
-            curr_center = curr_point.get("center", [0, 0])
-            distance = ((curr_center[0] - prev_center[0])**2 + (curr_center[1] - prev_center[1])**2)**0.5
-            
-            # 計算速度（像素/秒）
-            velocity = distance / time_diff if time_diff > 0 else float('inf')
-            
-            # 過濾條件：
-            # 1. 速度不能太快（假設球的最大速度約為 1000 像素/秒）
-            # 2. 距離不能太遠（假設相鄰兩幀最大距離約為 200 像素）
-            # 3. 置信度不能太低（< 0.2）
-            max_velocity = 1000.0  # 像素/秒
-            max_distance = 200.0  # 像素
-            min_confidence = 0.2
-            
-            if (velocity <= max_velocity and 
-                distance <= max_distance and 
-                curr_point.get("confidence", 0) >= min_confidence):
-                filtered.append(curr_point)
-            # 如果不符合條件，跳過這個點（視為誤檢測）
+        if len(basic_filtered) <= 5:
+            return basic_filtered
         
-        # 應用平滑處理
-        smoothed = self._smooth_ball_trajectory(filtered)
+        # Step 2: 使用 RANSAC 風格的拋物線擬合檢測異常值
+        physics_filtered = self._physics_based_outlier_removal(basic_filtered)
+        
+        # Step 3: 應用高斯加權平滑
+        smoothed = self._smooth_ball_trajectory(physics_filtered)
         
         return smoothed
     
+    def _basic_velocity_filter(self, trajectory: List[Dict]) -> List[Dict]:
+        """基本速度過濾 - 移除速度明顯不合理的點"""
+        if len(trajectory) <= 2:
+            return trajectory
+        
+        filtered = [trajectory[0]]
+        
+        for i in range(1, len(trajectory)):
+            prev_point = filtered[-1] if filtered else trajectory[i - 1]
+            curr_point = trajectory[i]
+            
+            # 計算時間差
+            time_diff = curr_point.get("timestamp", 0) - prev_point.get("timestamp", 0)
+            if time_diff <= 0:
+                time_diff = 1.0 / 30.0  # 假設 30 FPS
+            
+            # 計算距離和速度
+            prev_center = prev_point.get("center", [0, 0])
+            curr_center = curr_point.get("center", [0, 0])
+            distance = ((curr_center[0] - prev_center[0])**2 + (curr_center[1] - prev_center[1])**2)**0.5
+            velocity = distance / time_diff
+            
+            # 放寬速度限制（排球最快可達 100 km/h，約 27 m/s）
+            # 在 1920x1080 視頻中，假設球場寬度約 800 像素 = 9m
+            # 最高速度約 2400 像素/秒
+            max_velocity = 3000.0  # 像素/秒（給予更大容忍度）
+            min_confidence = 0.15
+            
+            if (velocity <= max_velocity and 
+                curr_point.get("confidence", 0) >= min_confidence):
+                filtered.append(curr_point)
+        
+        return filtered
+    
+    def _physics_based_outlier_removal(self, trajectory: List[Dict]) -> List[Dict]:
+        """
+        使用拋物線運動模型檢測並移除異常點
+        
+        排球在空中遵循拋物線軌跡（受重力影響）：
+        - x(t) = x0 + vx * t
+        - y(t) = y0 + vy * t + 0.5 * g * t^2
+        
+        使用滑動窗口擬合拋物線，移除偏離過大的點
+        """
+        if len(trajectory) <= 5:
+            return trajectory
+        
+        # 提取座標和幀
+        frames = [p.get("frame", i) for i, p in enumerate(trajectory)]
+        centers = [p.get("center", [0, 0]) for p in trajectory]
+        x_coords = [c[0] for c in centers]
+        y_coords = [c[1] for c in centers]
+        
+        # 計算每個點的異常分數
+        outlier_scores = [0.0] * len(trajectory)
+        window_size = 7  # 使用 7 個點進行局部擬合
+        
+        for i in range(len(trajectory)):
+            # 確定窗口範圍
+            start = max(0, i - window_size // 2)
+            end = min(len(trajectory), i + window_size // 2 + 1)
+            
+            if end - start < 4:
+                continue
+            
+            # 提取窗口內的點（排除當前點）
+            window_frames = []
+            window_x = []
+            window_y = []
+            
+            for j in range(start, end):
+                if j != i:
+                    window_frames.append(frames[j])
+                    window_x.append(x_coords[j])
+                    window_y.append(y_coords[j])
+            
+            if len(window_frames) < 3:
+                continue
+            
+            try:
+                # 對 x 坐標擬合一次多項式（線性運動）
+                t_normalized = np.array(window_frames) - np.mean(window_frames)
+                x_coeffs = np.polyfit(t_normalized, window_x, 1)
+                
+                # 對 y 坐標擬合二次多項式（拋物線運動）
+                y_coeffs = np.polyfit(t_normalized, window_y, 2)
+                
+                # 預測當前點的位置
+                t_curr = frames[i] - np.mean(window_frames)
+                predicted_x = np.polyval(x_coeffs, t_curr)
+                predicted_y = np.polyval(y_coeffs, t_curr)
+                
+                # 計算實際位置與預測位置的偏差
+                actual_x = x_coords[i]
+                actual_y = y_coords[i]
+                deviation = ((actual_x - predicted_x)**2 + (actual_y - predicted_y)**2)**0.5
+                
+                # 計算窗口內的平均移動距離作為參考
+                avg_distance = 0
+                for j in range(1, len(window_x)):
+                    avg_distance += ((window_x[j] - window_x[j-1])**2 + 
+                                   (window_y[j] - window_y[j-1])**2)**0.5
+                avg_distance /= max(1, len(window_x) - 1)
+                
+                # 如果偏差超過平均移動距離的 3 倍，標記為異常
+                if avg_distance > 0:
+                    outlier_scores[i] = deviation / avg_distance
+                else:
+                    outlier_scores[i] = 0
+                    
+            except Exception as e:
+                # 擬合失敗時不標記為異常
+                outlier_scores[i] = 0
+        
+        # 確定異常閾值（使用動態閾值）
+        valid_scores = [s for s in outlier_scores if s > 0]
+        if valid_scores:
+            median_score = np.median(valid_scores)
+            threshold = max(3.0, median_score * 2.5)  # 至少 3 倍偏差才算異常
+        else:
+            threshold = 3.0
+        
+        # 過濾異常點
+        filtered = []
+        removed_indices = []
+        
+        for i, point in enumerate(trajectory):
+            if outlier_scores[i] < threshold:
+                filtered.append(point)
+            else:
+                removed_indices.append(i)
+                print(f"🎯 移除異常球位置: frame={point.get('frame')}, "
+                      f"score={outlier_scores[i]:.2f}, threshold={threshold:.2f}")
+        
+        # 如果移除了太多點，可能是過度過濾，回退到原始數據
+        if len(filtered) < len(trajectory) * 0.5:
+            print(f"⚠️ 過濾移除了太多點 ({len(trajectory) - len(filtered)}/{len(trajectory)})，回退")
+            return trajectory
+        
+        return filtered
+    
     def _smooth_ball_trajectory(self, trajectory: List[Dict], window_size: int = 5) -> List[Dict]:
         """
-        使用移動平均平滑球的軌跡
+        使用高斯加權移動平均平滑球的軌跡
         
         Args:
             trajectory: 過濾後的軌跡點列表
@@ -1240,7 +1361,9 @@ class VolleyballAnalyzer:
     
     def _interpolate_missing_frames(self, trajectory: List[Dict], fps: float) -> List[Dict]:
         """
-        插值缺失的幀（可選功能，用於填補檢測空隙）
+        使用二次插值（拋物線）填補缺失的幀
+        
+        改進：使用拋物線插值代替線性插值，更符合球的物理運動
         
         Args:
             trajectory: 軌跡點列表
@@ -1261,27 +1384,83 @@ class VolleyballAnalyzer:
             prev_frame = prev_point.get("frame", 0)
             curr_frame = curr_point.get("frame", 0)
             
-            # 如果缺失幀數不超過 10 幀，進行線性插值
             frame_gap = curr_frame - prev_frame
-            if 1 < frame_gap <= 10:
+            
+            # 如果缺失幀數不超過 15 幀，進行插值
+            if 1 < frame_gap <= 15:
                 prev_center = prev_point.get("center", [0, 0])
                 curr_center = curr_point.get("center", [0, 0])
                 
-                for j in range(1, frame_gap):
-                    # 線性插值
-                    t = j / frame_gap
-                    interp_x = int(prev_center[0] + t * (curr_center[0] - prev_center[0]))
-                    interp_y = int(prev_center[1] + t * (curr_center[1] - prev_center[1]))
-                    interp_frame = prev_frame + j
-                    interp_timestamp = prev_point.get("timestamp", 0) + (j / fps)
+                # 嘗試使用前一個點和後一個點來擬合拋物線
+                if i >= 2 and i < len(trajectory) - 1:
+                    # 使用 3 個點擬合拋物線
+                    p0 = trajectory[i - 2].get("center", prev_center)
+                    p1 = prev_center
+                    p2 = curr_center
                     
-                    interpolated.append({
-                        "frame": interp_frame,
-                        "timestamp": interp_timestamp,
-                        "center": [interp_x, interp_y],
-                        "confidence": 0.0,  # 標記為插值點
-                        "interpolated": True
-                    })
+                    f0 = trajectory[i - 2].get("frame", prev_frame - 1)
+                    f1 = prev_frame
+                    f2 = curr_frame
+                    
+                    try:
+                        # 對 y 坐標擬合二次多項式
+                        frames_arr = np.array([f0, f1, f2])
+                        y_arr = np.array([p0[1], p1[1], p2[1]])
+                        y_coeffs = np.polyfit(frames_arr, y_arr, 2)
+                        
+                        # 對 x 坐標擬合線性多項式
+                        x_arr = np.array([p0[0], p1[0], p2[0]])
+                        x_coeffs = np.polyfit(frames_arr, x_arr, 1)
+                        
+                        for j in range(1, frame_gap):
+                            interp_frame = prev_frame + j
+                            interp_x = int(np.polyval(x_coeffs, interp_frame))
+                            interp_y = int(np.polyval(y_coeffs, interp_frame))
+                            interp_timestamp = prev_point.get("timestamp", 0) + (j / fps)
+                            
+                            interpolated.append({
+                                "frame": interp_frame,
+                                "timestamp": interp_timestamp,
+                                "center": [interp_x, interp_y],
+                                "confidence": 0.0,
+                                "interpolated": True,
+                                "method": "quadratic"
+                            })
+                        
+                    except Exception:
+                        # 擬合失敗，回退到線性插值
+                        for j in range(1, frame_gap):
+                            t = j / frame_gap
+                            interp_x = int(prev_center[0] + t * (curr_center[0] - prev_center[0]))
+                            interp_y = int(prev_center[1] + t * (curr_center[1] - prev_center[1]))
+                            interp_frame = prev_frame + j
+                            interp_timestamp = prev_point.get("timestamp", 0) + (j / fps)
+                            
+                            interpolated.append({
+                                "frame": interp_frame,
+                                "timestamp": interp_timestamp,
+                                "center": [interp_x, interp_y],
+                                "confidence": 0.0,
+                                "interpolated": True,
+                                "method": "linear"
+                            })
+                else:
+                    # 沒有足夠的點進行拋物線擬合，使用線性插值
+                    for j in range(1, frame_gap):
+                        t = j / frame_gap
+                        interp_x = int(prev_center[0] + t * (curr_center[0] - prev_center[0]))
+                        interp_y = int(prev_center[1] + t * (curr_center[1] - prev_center[1]))
+                        interp_frame = prev_frame + j
+                        interp_timestamp = prev_point.get("timestamp", 0) + (j / fps)
+                        
+                        interpolated.append({
+                            "frame": interp_frame,
+                            "timestamp": interp_timestamp,
+                            "center": [interp_x, interp_y],
+                            "confidence": 0.0,
+                            "interpolated": True,
+                            "method": "linear"
+                        })
             
             interpolated.append(curr_point)
         
@@ -1622,9 +1801,23 @@ class VolleyballAnalyzer:
         
         # 過濾球追蹤誤檢測（移除不在連續軌跡上的點）
         if len(results["ball_tracking"]["trajectory"]) > 0:
+            original_count = len(results["ball_tracking"]["trajectory"])
+            
+            # Step 1: 過濾異常點
             filtered_trajectory = self._filter_ball_trajectory(results["ball_tracking"]["trajectory"])
-            results["ball_tracking"]["trajectory"] = filtered_trajectory
-            results["ball_tracking"]["detected_frames"] = len(filtered_trajectory)
+            
+            # Step 2: 插值缺失的幀（使用拋物線插值）
+            fps_scalar = float(results["video_info"].get("fps", 30.0))
+            interpolated_trajectory = self._interpolate_missing_frames(filtered_trajectory, fps_scalar)
+            
+            results["ball_tracking"]["trajectory"] = interpolated_trajectory
+            results["ball_tracking"]["detected_frames"] = len([p for p in interpolated_trajectory if not p.get("interpolated", False)])
+            results["ball_tracking"]["total_frames_with_interpolation"] = len(interpolated_trajectory)
+            
+            # 統計
+            interpolated_count = len([p for p in interpolated_trajectory if p.get("interpolated", False)])
+            removed_count = original_count - results["ball_tracking"]["detected_frames"]
+            print(f"🎯 球軌跡處理: 原始 {original_count} 點 → 移除 {removed_count} 異常點 → 插值 {interpolated_count} 點 → 最終 {len(interpolated_trajectory)} 點")
         
         # 完成統計
         results["action_recognition"]["total_actions"] = len(results["action_recognition"]["actions"])
