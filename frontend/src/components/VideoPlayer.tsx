@@ -8,7 +8,7 @@ import { BallTracking } from './BallTracking';
 import { PlayerStats } from './PlayerStats';
 import { PlaySelector } from './PlaySelector';
 import { PlayerTaggingDialog } from './PlayerTaggingDialog';
-import { Loader2, AlertCircle, Clock, RefreshCw, ArrowLeft, PlayCircle, Users, Maximize2, Minimize2 } from 'lucide-react';
+import { Loader2, AlertCircle, RefreshCw, ArrowLeft, PlayCircle, Users, Maximize2, Minimize2 } from 'lucide-react';
 
 export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
   const params = useParams();
