@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>5/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>2/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>5/11</span>
             </div>
         
             
@@ -162,26 +162,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,15 +251,15 @@ interface PlayerTaggingDialogProps {
   onConfirm: (jerseyNumber: number) =&gt; void;
 }
 &nbsp;
-export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = ({
   player,
   currentFrame,
   onClose,
   onConfirm
 }) =&gt; {
-  const [jerseyNumber, setJerseyNumber] = <span class="cstat-no" title="statement not covered" >useState&lt;string&gt;('');</span>
+  const [jerseyNumber, setJerseyNumber] = useState&lt;string&gt;('');
 &nbsp;
-  const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: React.FormEvent) =&gt; {</span>
+  const handleSubmit = <span class="fstat-no" title="function not covered" >(e</span>: React.FormEvent) =&gt; {
 <span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
     const num = <span class="cstat-no" title="statement not covered" >parseInt(jerseyNumber);</span>
 <span class="cstat-no" title="statement not covered" >    if (num &gt;= 1 &amp;&amp; num &lt;= 99) {</span>
@@ -268,9 +268,9 @@ export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = <sp
     }
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}&gt;
-      &lt;div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4" onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e.stopPropagation()}</span>&gt;
+      &lt;div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) =&gt; e.stopPropagation()}&gt;
         &lt;div className="flex items-center justify-between mb-4"&gt;
           &lt;h3 className="text-lg font-semibold text-gray-900"&gt;Tag Jersey Number&lt;/h3&gt;
           &lt;button
@@ -283,7 +283,7 @@ export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = <sp
 &nbsp;
         &lt;div className="mb-4"&gt;
           &lt;p className="text-sm text-gray-600 mb-2"&gt;
-            Track ID: &lt;span className="font-semibold"&gt;{player.id || player.stable_id}&lt;/span&gt;
+            Track ID: &lt;span className="font-semibold"&gt;{player.id || <span class="branch-1 cbranch-no" title="branch not covered" >player.stable_id}</span>&lt;/span&gt;
           &lt;/p&gt;
           &lt;p className="text-sm text-gray-600"&gt;
             Current Frame: &lt;span className="font-semibold"&gt;{currentFrame}&lt;/span&gt;
@@ -317,7 +317,7 @@ export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = <sp
             &lt;/button&gt;
             &lt;button
               type="submit"
-              disabled={!jerseyNumber || parseInt(jerseyNumber) &lt; 1 || parseInt(jerseyNumber) &gt; 99}
+              disabled={!jerseyNumber || <span class="branch-1 cbranch-no" title="branch not covered" >parseInt(jerseyNumber) &lt; 1 </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >parseInt(jerseyNumber) &gt; 99}</span>
               className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             &gt;
               &lt;Check className="w-4 h-4" /&gt;
@@ -337,7 +337,7 @@ export const PlayerTaggingDialog: React.FC&lt;PlayerTaggingDialogProps&gt; = <sp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-10T07:38:39.133Z
+                at 2025-12-10T07:42:20.956Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

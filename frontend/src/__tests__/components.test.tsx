@@ -280,3 +280,206 @@ describe('EmptyState Component', () => {
         expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
     });
 });
+
+// ============================================================================
+// VideoUpload Component Tests
+// ============================================================================
+
+describe('VideoUpload Component', () => {
+    const { VideoUpload } = require('../components/VideoUpload');
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('renders without crashing', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText('Upload Video')).toBeInTheDocument();
+    });
+
+    it('displays upload instructions', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText(/Upload your volleyball match video/i)).toBeInTheDocument();
+    });
+
+    it('shows file format info', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText(/MP4, AVI, MOV/i)).toBeInTheDocument();
+    });
+
+    it('shows max file size info', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText('2GB')).toBeInTheDocument();
+    });
+
+    it('has idle status initially', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText('Select a video file to begin')).toBeInTheDocument();
+    });
+
+    it('displays drag and drop text', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText(/Drag and drop your video here/i)).toBeInTheDocument();
+    });
+
+    it('has select file button', () => {
+        renderWithRouter(<VideoUpload />);
+        expect(screen.getByText('Select File')).toBeInTheDocument();
+    });
+});
+
+// ============================================================================
+// PlayerTaggingDialog Component Tests
+// ============================================================================
+
+describe('PlayerTaggingDialog Component', () => {
+    const { PlayerTaggingDialog } = require('../components/PlayerTaggingDialog');
+
+    const mockPlayer = { id: 123, stable_id: 'player-123' };
+    const mockOnClose = jest.fn();
+    const mockOnConfirm = jest.fn();
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('renders without crashing', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        expect(screen.getByText('Tag Jersey Number')).toBeInTheDocument();
+    });
+
+    it('displays track ID', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        expect(screen.getByText(/Track ID:/i)).toBeInTheDocument();
+        expect(screen.getByText('123')).toBeInTheDocument();
+    });
+
+    it('displays current frame', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={250}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        expect(screen.getByText(/Current Frame:/i)).toBeInTheDocument();
+        expect(screen.getByText('250')).toBeInTheDocument();
+    });
+
+    it('has jersey number input', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        expect(screen.getByPlaceholderText('Enter jersey number')).toBeInTheDocument();
+    });
+
+    it('has cancel and confirm buttons', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        expect(screen.getByText('Cancel')).toBeInTheDocument();
+        expect(screen.getByText('Confirm')).toBeInTheDocument();
+    });
+
+    it('calls onClose when cancel is clicked', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        screen.getByText('Cancel').click();
+        expect(mockOnClose).toHaveBeenCalled();
+    });
+
+    it('confirm button is disabled when input is empty', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        const confirmButton = screen.getByText('Confirm').closest('button');
+        expect(confirmButton).toBeDisabled();
+    });
+});
+
+// ============================================================================
+// VolleyballIcons Component Tests
+// ============================================================================
+
+describe('VolleyballIcons Component', () => {
+    const { SpikeIcon, SetIcon, ReceiveIcon, ServeIcon, BlockIcon } = require('../components/icons/VolleyballIcons');
+
+    it('renders SpikeIcon without crashing', () => {
+        render(<SpikeIcon />);
+        const svg = document.querySelector('svg');
+        expect(svg).toBeInTheDocument();
+    });
+
+    it('renders SetIcon without crashing', () => {
+        render(<SetIcon />);
+        const svg = document.querySelector('svg');
+        expect(svg).toBeInTheDocument();
+    });
+
+    it('renders ReceiveIcon without crashing', () => {
+        render(<ReceiveIcon />);
+        const svg = document.querySelector('svg');
+        expect(svg).toBeInTheDocument();
+    });
+
+    it('renders ServeIcon without crashing', () => {
+        render(<ServeIcon />);
+        const svg = document.querySelector('svg');
+        expect(svg).toBeInTheDocument();
+    });
+
+    it('renders BlockIcon without crashing', () => {
+        render(<BlockIcon />);
+        const svg = document.querySelector('svg');
+        expect(svg).toBeInTheDocument();
+    });
+
+    it('accepts custom className', () => {
+        render(<SpikeIcon className="custom-class" />);
+        const svg = document.querySelector('svg');
+        expect(svg).toHaveClass('custom-class');
+    });
+
+    it('accepts custom size', () => {
+        render(<SpikeIcon size={32} />);
+        const svg = document.querySelector('svg');
+        expect(svg).toHaveAttribute('width', '32');
+        expect(svg).toHaveAttribute('height', '32');
+    });
+});
