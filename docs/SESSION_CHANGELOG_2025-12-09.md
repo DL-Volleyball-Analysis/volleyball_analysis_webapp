@@ -174,9 +174,25 @@ Structured logging module with:
 | API Response Handling | 3 tests |
 | Error Handling | 2 tests |
 
+**Frontend Component Tests: `frontend/src/__tests__/components.test.tsx`**
+
+| Test Suite | Tests | Coverage |
+|------------|-------|----------|
+| Privacy | 6 tests | **100%** |
+| Terms | 5 tests | **100%** |
+| Support | 5 tests | **100%** |
+| Dashboard | 4 tests | **70.83%** |
+| StatusBadge | 4 tests | **100%** |
+| EmptyState | 2 tests | **100%** |
+| VideoUpload | 7 tests | **19.48%** |
+| PlayerTaggingDialog | 8 tests | **45.45%** |
+| VolleyballIcons | 7 tests | **91.66%** |
+
 ---
 
 #### Test Coverage Results
+
+**Backend Coverage:**
 
 | Module | Coverage |
 |--------|----------|
@@ -184,7 +200,26 @@ Structured logging module with:
 | `backend/database.py` | **81%** |
 | `backend/main.py` | **36%** |
 | `ai_core/processor.py` | **18%** |
-| **Total** | **32%** |
+| **Total Backend** | **32%** |
+
+**Frontend Coverage:**
+
+| Module | Coverage |
+|--------|----------|
+| `Privacy.tsx` | **100%** |
+| `Terms.tsx` | **100%** |
+| `Support.tsx` | **100%** |
+| `VolleyballIcons.tsx` | **91.66%** |
+| `Dashboard.tsx` | **70.83%** |
+| `StatusBadge.tsx` | **100%** |
+| `EmptyState.tsx` | **100%** |
+| `PlayerTaggingDialog.tsx` | **45.45%** |
+| `VideoUpload.tsx` | **19.48%** |
+| **Total Frontend Statements** | **4.76%** |
+
+**Test Totals:**
+- Backend: **71 passed**
+- Frontend: **97 passed, 4 skipped**
 
 **New Config Files:**
 - `pytest.ini` - Pytest configuration
