@@ -68,8 +68,41 @@ This session focused on:
 ### 📊 Git Commits (Dec 10)
 
 1. `feat: replace emoji/SVG icons with PNG action icons for timeline and player stats`
+2. `fix: initialize ball_frame_buffer in __init__ and update changelog`
+3. `feat: add TypeScript interfaces and backend path resolution helpers`
 
 ---
+
+#### TypeScript Type Definitions
+
+**New File: `frontend/src/types/index.ts`**
+
+Comprehensive type definitions including:
+- `ActionType`, `ActionEvent`, `ActionDetection` - Action-related types
+- `PlayerDetection`, `PlayerTrack`, `PlayerStats`, `JerseyMapping` - Player types
+- `BallPosition`, `BallTrajectory` - Ball tracking types
+- `GameState`, `ScoreEvent`, `Play` - Game state types
+- `Video`, `VideoInfo`, `VideoStatus` - Video types
+- `AnalysisTask`, `AnalysisResults` - Analysis types
+- `ActionStyle`, `ActionWithRow` - UI component props
+- `ProgressMessage` - WebSocket message types
+
+---
+
+#### Backend Path Resolution Helpers
+
+**`main.py`** - Added helper functions:
+
+| Function | Description |
+|----------|-------------|
+| `resolve_video_path(video: Dict)` | Unified video file path resolution with fallback locations |
+| `resolve_results_path(video_id: str)` | Resolve analysis results file path |
+
+**Benefits:**
+- Reduces code duplication across endpoints
+- Handles relative/absolute paths automatically
+- Checks multiple fallback directories (legacy support)
+- Returns `None` if file not found (explicit error handling)
 
 ## 📅 December 7-9, 2025 Session
 

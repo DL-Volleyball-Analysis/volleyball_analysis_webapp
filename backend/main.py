@@ -12,7 +12,7 @@ import os
 import uuid
 import json
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 import asyncio
 from pathlib import Path
 from pydantic import BaseModel
@@ -55,6 +55,83 @@ JERSEY_MAPPINGS_FILE = PROJECT_ROOT / "data" / "jersey_mappings.json"  # 球衣�
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(DB_FILE.parent, exist_ok=True)
+
+
+# ========== 路徑解析輔助函數 ==========
+def resolve_video_path(video: Dict) -> Optional[Path]:
+    """
+    統一解析視頻文件路徑
+    
+    支援多種路徑格式並檢查多個可能的位置：
+    1. 原始路徑（相對或絕對）
+    2. PROJECT_ROOT/data/uploads/ 目錄
+    3. BACKEND_DIR/data/uploads/ 目錄（兼容舊版本）
+    
+    Args:
+        video: 視頻資訊字典，必須包含 'file_path' 鍵
+        
+    Returns:
+        解析後的 Path 對象，如果找不到文件則返回 None
+    """
+    file_path = video.get("file_path")
+    if not file_path:
+        return None
+    
+    # 轉換為 Path 對象
+    path = Path(file_path)
+    
+    # 如果是相對路徑，先嘗試相對於 PROJECT_ROOT
+    if not path.is_absolute():
+        path = PROJECT_ROOT / file_path
+    
+    # 標準化路徑
+    path = path.resolve()
+    
+    # 如果文件存在，直接返回
+    if path.exists():
+        return path
+    
+    # 嘗試其他可能的位置
+    basename = Path(file_path).name
+    alt_paths = [
+        UPLOAD_DIR / basename,
+        BACKEND_UPLOAD_DIR / basename,
+        PROJECT_ROOT / "data" / "uploads" / basename,
+    ]
+    
+    for alt_path in alt_paths:
+        if alt_path.exists():
+            return alt_path.resolve()
+    
+    # 找不到文件
+    return None
+
+
+def resolve_results_path(video_id: str) -> Optional[Path]:
+    """
+    解析分析結果文件路徑
+    
+    Args:
+        video_id: 視頻 ID
+        
+    Returns:
+        結果文件的 Path 對象，如果找不到則返回 None
+    """
+    results_filename = f"{video_id}_results.json"
+    
+    # 檢查主目錄
+    results_path = RESULTS_DIR / results_filename
+    if results_path.exists():
+        return results_path
+    
+    # 檢查備份目錄
+    if BACKEND_RESULTS_DIR.exists():
+        backup_path = BACKEND_RESULTS_DIR / results_filename
+        if backup_path.exists():
+            return backup_path
+    
+    return None
+
 
 # 導入 SQLite 資料庫模組
 from database import get_database, Database
