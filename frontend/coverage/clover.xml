@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1765352540991" clover="3.2.0">
-  <project timestamp="1765352540991" name="All files">
-    <metrics statements="1176" coveredstatements="58" conditionals="995" coveredconditionals="40" methods="241" coveredmethods="19" elements="2412" coveredelements="117" complexity="0" loc="1176" ncloc="1176" packages="6" files="21" classes="21"/>
+<coverage generated="1765352774744" clover="3.2.0">
+  <project timestamp="1765352774744" name="All files">
+    <metrics statements="1176" coveredstatements="126" conditionals="995" coveredconditionals="76" methods="241" coveredmethods="33" elements="2412" coveredelements="235" complexity="0" loc="1176" ncloc="1176" packages="6" files="21" classes="21"/>
     <package name="src">
-      <metrics statements="16" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="0"/>
+      <metrics statements="16" coveredstatements="1" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="1"/>
       <file name="App.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/App.tsx">
-        <metrics statements="14" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <metrics statements="14" coveredstatements="1" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="1"/>
         <line num="13" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
@@ -19,7 +19,7 @@
         <line num="76" count="0" type="stmt"/>
         <line num="77" count="0" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
+        <line num="104" count="5" type="stmt"/>
       </file>
       <file name="index.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/index.tsx">
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -28,16 +28,16 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="1084" coveredstatements="43" conditionals="962" coveredconditionals="21" methods="205" coveredmethods="12"/>
+      <metrics statements="1084" coveredstatements="110" conditionals="962" coveredconditionals="57" methods="205" coveredmethods="25"/>
       <file name="BallTracking.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/BallTracking.tsx">
-        <metrics statements="90" coveredstatements="0" conditionals="90" coveredconditionals="0" methods="5" coveredmethods="0"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="cond" truecount="0" falsecount="6"/>
-        <line num="22" count="0" type="cond" truecount="0" falsecount="2"/>
+        <metrics statements="90" coveredstatements="7" conditionals="90" coveredconditionals="5" methods="5" coveredmethods="2"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="cond" truecount="2" falsecount="4"/>
+        <line num="22" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="23" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
         <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="35" count="0" type="stmt"/>
@@ -119,20 +119,20 @@
         <line num="186" count="0" type="stmt"/>
         <line num="187" count="0" type="stmt"/>
         <line num="188" count="0" type="stmt"/>
-        <line num="194" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="194" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="196" count="0" type="stmt"/>
       </file>
       <file name="BoundingBoxes.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/BoundingBoxes.tsx">
-        <metrics statements="75" coveredstatements="0" conditionals="82" coveredconditionals="0" methods="10" coveredmethods="0"/>
-        <line num="16" count="0" type="stmt"/>
+        <metrics statements="75" coveredstatements="6" conditionals="82" coveredconditionals="5" methods="10" coveredmethods="1"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
         <line num="38" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="53" count="8" type="stmt"/>
+        <line num="55" count="8" type="stmt"/>
         <line num="56" count="0" type="cond" truecount="0" falsecount="5"/>
         <line num="58" count="0" type="stmt"/>
         <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -198,11 +198,11 @@
         <line num="171" count="0" type="stmt"/>
         <line num="174" count="0" type="stmt"/>
         <line num="175" count="0" type="stmt"/>
-        <line num="180" count="0" type="stmt"/>
+        <line num="180" count="8" type="stmt"/>
       </file>
       <file name="Dashboard.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/Dashboard.tsx">
         <metrics statements="24" coveredstatements="17" conditionals="25" coveredconditionals="8" methods="8" coveredmethods="4"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
         <line num="10" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
@@ -228,9 +228,9 @@
         <line num="143" count="0" type="stmt"/>
       </file>
       <file name="EventTimeline.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/EventTimeline.tsx">
-        <metrics statements="121" coveredstatements="0" conditionals="93" coveredconditionals="0" methods="31" coveredmethods="0"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
+        <metrics statements="121" coveredstatements="4" conditionals="93" coveredconditionals="0" methods="31" coveredmethods="0"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
         <line num="28" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="30" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
@@ -238,12 +238,12 @@
         <line num="57" count="0" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
         <line num="88" count="0" type="stmt"/>
         <line num="90" count="0" type="stmt"/>
         <line num="93" count="0" type="stmt"/>
         <line num="94" count="0" type="stmt"/>
-        <line num="116" count="0" type="stmt"/>
+        <line num="116" count="1" type="stmt"/>
         <line num="128" count="0" type="stmt"/>
         <line num="129" count="0" type="stmt"/>
         <line num="130" count="0" type="stmt"/>
@@ -352,20 +352,20 @@
         <line num="424" count="0" type="stmt"/>
       </file>
       <file name="PlaySelector.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/PlaySelector.tsx">
-        <metrics statements="21" coveredstatements="0" conditionals="23" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
+        <metrics statements="21" coveredstatements="6" conditionals="23" coveredconditionals="0" methods="6" coveredmethods="2"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="28" count="8" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
+        <line num="36" count="8" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="39" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
+        <line num="45" count="8" type="stmt"/>
         <line num="47" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="48" count="0" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
@@ -376,14 +376,14 @@
         <line num="116" count="0" type="stmt"/>
       </file>
       <file name="PlayerHeatmap.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/PlayerHeatmap.tsx">
-        <metrics statements="38" coveredstatements="0" conditionals="40" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="cond" truecount="0" falsecount="6"/>
-        <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+        <metrics statements="38" coveredstatements="7" conditionals="40" coveredconditionals="7" methods="6" coveredmethods="2"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="2" type="cond" truecount="2" falsecount="4"/>
+        <line num="24" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="39" count="0" type="stmt"/>
@@ -413,12 +413,12 @@
         <line num="80" count="0" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
         <line num="82" count="0" type="stmt"/>
-        <line num="87" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="87" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="89" count="0" type="stmt"/>
       </file>
       <file name="PlayerStats.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/PlayerStats.tsx">
-        <metrics statements="242" coveredstatements="0" conditionals="185" coveredconditionals="0" methods="44" coveredmethods="0"/>
-        <line num="15" count="0" type="stmt"/>
+        <metrics statements="242" coveredstatements="3" conditionals="185" coveredconditionals="0" methods="44" coveredmethods="0"/>
+        <line num="15" count="1" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="19" count="0" type="stmt"/>
@@ -427,7 +427,7 @@
         <line num="25" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
         <line num="34" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="36" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
@@ -435,7 +435,7 @@
         <line num="42" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
@@ -663,7 +663,7 @@
       </file>
       <file name="PlayerTaggingDialog.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/PlayerTaggingDialog.tsx">
         <metrics statements="11" coveredstatements="5" conditionals="9" coveredconditionals="2" methods="4" coveredmethods="2"/>
-        <line num="11" count="1" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
         <line num="17" count="7" type="stmt"/>
         <line num="19" count="7" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
@@ -677,60 +677,60 @@
       </file>
       <file name="Privacy.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/Privacy.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
         <line num="6" count="6" type="stmt"/>
       </file>
       <file name="Support.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/Support.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
       </file>
       <file name="Terms.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/Terms.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
       </file>
       <file name="VideoLibrary.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/VideoLibrary.tsx">
-        <metrics statements="80" coveredstatements="0" conditionals="49" coveredconditionals="0" methods="28" coveredmethods="0"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+        <metrics statements="80" coveredstatements="33" conditionals="49" coveredconditionals="19" methods="28" coveredmethods="6"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
+        <line num="18" count="8" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="20" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="23" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="5" type="cond" truecount="1" falsecount="1"/>
         <line num="27" count="0" type="stmt"/>
         <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
+        <line num="33" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="34" count="5" type="stmt"/>
+        <line num="39" count="6" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
+        <line num="42" count="6" type="stmt"/>
+        <line num="47" count="8" type="stmt"/>
         <line num="48" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="51" count="0" type="stmt"/>
+        <line num="51" count="8" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
         <line num="54" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="55" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="58" count="0" type="stmt"/>
+        <line num="58" count="8" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
         <line num="62" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
+        <line num="65" count="8" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
+        <line num="70" count="8" type="stmt"/>
         <line num="71" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="72" count="0" type="stmt"/>
         <line num="73" count="0" type="stmt"/>
@@ -741,12 +741,12 @@
         <line num="81" count="0" type="stmt"/>
         <line num="83" count="0" type="stmt"/>
         <line num="84" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
+        <line num="88" count="8" type="stmt"/>
         <line num="89" count="0" type="stmt"/>
         <line num="90" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
+        <line num="93" count="8" type="stmt"/>
         <line num="94" count="0" type="stmt"/>
-        <line num="97" count="0" type="stmt"/>
+        <line num="97" count="8" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
         <line num="99" count="0" type="stmt"/>
         <line num="100" count="0" type="stmt"/>
@@ -755,11 +755,11 @@
         <line num="105" count="0" type="stmt"/>
         <line num="106" count="0" type="stmt"/>
         <line num="108" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
+        <line num="112" count="8" type="stmt"/>
         <line num="113" count="0" type="stmt"/>
-        <line num="116" count="0" type="stmt"/>
-        <line num="138" count="0" type="stmt"/>
-        <line num="148" count="0" type="stmt"/>
+        <line num="116" count="8" type="stmt"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="148" count="32" type="stmt"/>
         <line num="150" count="0" type="stmt"/>
         <line num="200" count="0" type="stmt"/>
         <line num="212" count="0" type="stmt"/>
@@ -774,8 +774,8 @@
         <line num="306" count="0" type="stmt"/>
       </file>
       <file name="VideoPlayer.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/VideoPlayer.tsx">
-        <metrics statements="301" coveredstatements="0" conditionals="311" coveredconditionals="0" methods="47" coveredmethods="0"/>
-        <line num="13" count="0" type="stmt"/>
+        <metrics statements="301" coveredstatements="1" conditionals="311" coveredconditionals="0" methods="47" coveredmethods="0"/>
+        <line num="13" count="1" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="16" count="0" type="cond" truecount="0" falsecount="3"/>
         <line num="18" count="0" type="stmt"/>
@@ -1079,7 +1079,7 @@
       </file>
       <file name="VideoUpload.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/VideoUpload.tsx">
         <metrics statements="75" coveredstatements="15" conditionals="55" coveredconditionals="11" methods="13" coveredmethods="3"/>
-        <line num="13" count="1" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
         <line num="14" count="7" type="stmt"/>
         <line num="19" count="7" type="stmt"/>
         <line num="20" count="7" type="stmt"/>
@@ -1178,12 +1178,12 @@
       <metrics statements="4" coveredstatements="4" conditionals="11" coveredconditionals="9" methods="2" coveredmethods="2"/>
       <file name="EmptyState.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/ui/EmptyState.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
       </file>
       <file name="StatusBadge.tsx" path="/Users/jesse/Documents/專題/volleyball_analysis_webapp/frontend/src/components/ui/StatusBadge.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="9" coveredconditionals="7" methods="1" coveredmethods="1"/>
-        <line num="3" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="3" count="2" type="cond" truecount="0" falsecount="1"/>
         <line num="4" count="4" type="stmt"/>
       </file>
     </package>

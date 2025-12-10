@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">8.6% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/93</span>
+                <span class='fraction'>8/93</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.55% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/90</span>
+                <span class='fraction'>5/90</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.77% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/90</span>
+                <span class='fraction'>7/90</span>
             </div>
         
             
@@ -283,25 +283,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -466,7 +466,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -493,25 +493,25 @@ interface BallTrackingProps {
   enabled?: boolean;
 }
 &nbsp;
-export const BallTracking: React.FC&lt;BallTrackingProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const BallTracking: React.FC&lt;BallTrackingProps&gt; = ({
   ballTrajectory,
   currentTime,
   fps,
   videoSize,
-  enabled = <span class="branch-0 cbranch-no" title="branch not covered" >false</span>
+  enabled = false
 }) =&gt; {
-  const canvasRef = <span class="cstat-no" title="statement not covered" >useRef&lt;HTMLCanvasElement&gt;(null);</span>
+  const canvasRef = useRef&lt;HTMLCanvasElement&gt;(null);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!enabled || !canvasRef.current || !videoSize?.width || !videoSize?.height) {</span>
-<span class="cstat-no" title="statement not covered" >      if (enabled) {</span>
+  useEffect(() =&gt; {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!enabled || <span class="branch-1 cbranch-no" title="branch not covered" >!canvasRef.current </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >!videoSize?.width </span>|| <span class="branch-3 cbranch-no" title="branch not covered" >!videoSize?.height)</span> {
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (enabled) {
 <span class="cstat-no" title="statement not covered" >        console.log('BallTracking: Disabled or missing requirements', {</span>
           enabled,
           hasCanvas: !!canvasRef.current,
           videoSize
         });
       }
-<span class="cstat-no" title="statement not covered" >      return;</span>
+      return;
     }
     
     const ctx = <span class="cstat-no" title="statement not covered" >canvasRef.current.getContext('2d');</span>
@@ -676,7 +676,7 @@ export const BallTracking: React.FC&lt;BallTrackingProps&gt; = <span class="csta
     });
   }, [ballTrajectory, currentTime, fps, videoSize, enabled]);
   
-<span class="cstat-no" title="statement not covered" >  if (!enabled) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!enabled) return null;
   
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;canvas
@@ -700,7 +700,7 @@ export const BallTracking: React.FC&lt;BallTrackingProps&gt; = <span class="csta
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-10T07:42:20.956Z
+                at 2025-12-10T07:46:14.708Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

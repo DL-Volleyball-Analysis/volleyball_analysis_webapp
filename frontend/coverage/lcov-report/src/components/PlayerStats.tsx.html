@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/246</span>
+                <span class='fraction'>3/246</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/242</span>
+                <span class='fraction'>3/242</span>
             </div>
         
             
@@ -777,24 +777,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -812,7 +795,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1477,7 +1477,7 @@ interface PlayerStatsProps {
   jerseyMappings?: Record&lt;string, any&gt;;  // 手動標記的球衣號碼映射
 }
 &nbsp;
-const getActionIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string) =&gt; {</span>
+const getActionIcon = <span class="fstat-no" title="function not covered" >(a</span>ction: string) =&gt; {
   const imgClass = <span class="cstat-no" title="statement not covered" >"w-6 h-6 object-contain";</span>
 <span class="cstat-no" title="statement not covered" >  switch (action?.toLowerCase()) {</span>
     case 'spike':
@@ -1495,7 +1495,7 @@ const getActionIcon = <span class="cstat-no" title="statement not covered" ><spa
   }
 };
 &nbsp;
-const getActionColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {</span>
+const getActionColor = <span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {
 <span class="cstat-no" title="statement not covered" >  switch (action?.toLowerCase()) {</span>
     case 'spike':
 <span class="cstat-no" title="statement not covered" >      return 'bg-red-100 text-red-700 border-red-200';</span>
@@ -1512,7 +1512,7 @@ const getActionColor = <span class="cstat-no" title="statement not covered" ><sp
   }
 };
 &nbsp;
-export const PlayerStats: React.FC&lt;PlayerStatsProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const PlayerStats: React.FC&lt;PlayerStatsProps&gt; = <span class="fstat-no" title="function not covered" >({</span>
   actions,
   playerTracks,
   videoId,
@@ -2170,7 +2170,7 @@ export const PlayerStats: React.FC&lt;PlayerStatsProps&gt; = <span class="cstat-
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-10T07:42:20.956Z
+                at 2025-12-10T07:46:14.708Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

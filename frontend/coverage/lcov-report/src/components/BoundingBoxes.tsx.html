@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/80</span>
+                <span class='fraction'>6/80</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">6.09% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/82</span>
+                <span class='fraction'>5/82</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>1/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">8% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/75</span>
+                <span class='fraction'>6/75</span>
             </div>
         
             
@@ -277,8 +277,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -291,8 +291,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -302,7 +302,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -314,10 +314,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -441,7 +441,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -476,7 +476,7 @@ interface BoundingBoxesProps {
   jerseyMappings?: Record&lt;string, any&gt;;  // 新增：球衣號碼映射
 }
 &nbsp;
-const getPlayerColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>layerId: number): string =&gt; {</span>
+const getPlayerColor = <span class="fstat-no" title="function not covered" >(p</span>layerId: number): string =&gt; {
   const colors = <span class="cstat-no" title="statement not covered" >[</span>
     '#3B82F6', // blue
     '#10B981', // green
@@ -490,7 +490,7 @@ const getPlayerColor = <span class="cstat-no" title="statement not covered" ><sp
 <span class="cstat-no" title="statement not covered" >  return colors[playerId % colors.length];</span>
 };
 &nbsp;
-const getActionColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {</span>
+const getActionColor = <span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {
   const colorMap: Record&lt;string, string&gt; = <span class="cstat-no" title="statement not covered" >{</span>
     spike: '#EF4444',    // red
     set: '#3B82F6',      // blue
@@ -501,21 +501,21 @@ const getActionColor = <span class="cstat-no" title="statement not covered" ><sp
 <span class="cstat-no" title="statement not covered" >  return colorMap[action] || '#6B7280';</span>
 };
 &nbsp;
-export const BoundingBoxes: React.FC&lt;BoundingBoxesProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const BoundingBoxes: React.FC&lt;BoundingBoxesProps&gt; = ({
   playerTracks,
   actions,
   currentTime,
   fps,
   videoSize,
-  showPlayers = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
-  showActions = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
-  playerNames = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
+  showPlayers = true,
+  showActions = true,
+  playerNames = {},
   onPlayerClick,
-  jerseyMappings = <span class="branch-0 cbranch-no" title="branch not covered" >{}</span>
+  jerseyMappings = {}
 }) =&gt; {
-  const canvasRef = <span class="cstat-no" title="statement not covered" >useRef&lt;HTMLCanvasElement&gt;(null);</span>
+  const canvasRef = useRef&lt;HTMLCanvasElement&gt;(null);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >    if (!canvasRef.current || !videoSize?.width || !videoSize?.height) <span class="cstat-no" title="statement not covered" >return;</span></span>
     
     const ctx = <span class="cstat-no" title="statement not covered" >canvasRef.current.getContext('2d');</span>
@@ -640,11 +640,11 @@ export const BoundingBoxes: React.FC&lt;BoundingBoxesProps&gt; = <span class="cs
     }
   }, [playerTracks, actions, currentTime, fps, videoSize, showPlayers, showActions, playerNames, jerseyMappings]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;&gt;
       &lt;canvas
         ref={canvasRef}
-        width={videoSize.width || 640}
+        width={videoSize.width || <span class="branch-1 cbranch-no" title="branch not covered" >640}</span>
         height={videoSize.height || 360}
         className="absolute left-0 top-0 pointer-events-none"
         style={{ 
@@ -667,7 +667,7 @@ export const BoundingBoxes: React.FC&lt;BoundingBoxesProps&gt; = <span class="cs
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-10T07:42:20.956Z
+                at 2025-12-10T07:46:14.708Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
