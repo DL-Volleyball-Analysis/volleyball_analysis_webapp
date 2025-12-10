@@ -32,10 +32,10 @@ export const Support: React.FC = () => {
                                 Send us an email and we'll respond within 24 hours.
                             </p>
                             <a
-                                href="mailto:support@volleyballai.com"
+                                href="mailto:ch993115@gmail.com"
                                 className="text-blue-600 font-medium hover:text-blue-700 transition-colors"
                             >
-                                support@volleyballai.com
+                                ch993115@gmail.com
                             </a>
                         </div>
 

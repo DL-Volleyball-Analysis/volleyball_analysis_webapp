@@ -250,7 +250,7 @@ export const VideoPlayer: React.FC<{ videoId?: string }> = ({ videoId }) => {
       setSelectedPlayer(null);
     } catch (error) {
       console.error('Failed to set jersey mapping:', error);
-      alert('標記失敗，請重試');
+      alert('Failed to tag jersey. Please try again.');
     }
   };
 

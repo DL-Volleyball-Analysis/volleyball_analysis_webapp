@@ -29,7 +29,7 @@ export const PlayerTaggingDialog: React.FC<PlayerTaggingDialogProps> = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">標記球衣號碼</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Tag Jersey Number</h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -37,20 +37,20 @@ export const PlayerTaggingDialog: React.FC<PlayerTaggingDialogProps> = ({
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="mb-4">
           <p className="text-sm text-gray-600 mb-2">
-            追蹤 ID: <span className="font-semibold">{player.id || player.stable_id}</span>
+            Track ID: <span className="font-semibold">{player.id || player.stable_id}</span>
           </p>
           <p className="text-sm text-gray-600">
-            當前幀: <span className="font-semibold">{currentFrame}</span>
+            Current Frame: <span className="font-semibold">{currentFrame}</span>
           </p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              球衣號碼 (1-99)
+              Jersey Number (1-99)
             </label>
             <input
               type="number"
@@ -59,7 +59,7 @@ export const PlayerTaggingDialog: React.FC<PlayerTaggingDialogProps> = ({
               value={jerseyNumber}
               onChange={(e) => setJerseyNumber(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="輸入球衣號碼"
+              placeholder="Enter jersey number"
               autoFocus
             />
           </div>
@@ -70,7 +70,7 @@ export const PlayerTaggingDialog: React.FC<PlayerTaggingDialogProps> = ({
               onClick={onClose}
               className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors font-medium"
             >
-              取消
+              Cancel
             </button>
             <button
               type="submit"
@@ -78,7 +78,7 @@ export const PlayerTaggingDialog: React.FC<PlayerTaggingDialogProps> = ({
               className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               <Check className="w-4 h-4" />
-              確認
+              Confirm
             </button>
           </div>
         </form>
