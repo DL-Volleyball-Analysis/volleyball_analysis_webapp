@@ -115,15 +115,15 @@ class TestDatabase:
         """Create a temporary database"""
         db_path = tmp_path / "test_volleyball.db"
         
-        # Mock the database module to use temp path
-        with patch.dict(os.environ, {"TEST_DB_PATH": str(db_path)}):
-            from database import Database
-            db = Database(str(db_path))
-            yield db
+        from database import Database
+        db = Database(str(db_path))
+        yield db
+        db.close()
     
     def test_add_video(self, temp_db, sample_video_dict):
         """Test adding a video to database"""
-        temp_db.add_video(sample_video_dict)
+        result = temp_db.add_video(sample_video_dict)
+        assert result is True
         
         video = temp_db.get_video(sample_video_dict["id"])
         assert video is not None
@@ -134,18 +134,19 @@ class TestDatabase:
         video = temp_db.get_video("nonexistent-id")
         assert video is None
     
-    def test_list_videos(self, temp_db, sample_video_dict):
+    def test_get_all_videos(self, temp_db, sample_video_dict):
         """Test listing all videos"""
         temp_db.add_video(sample_video_dict)
         
-        videos = temp_db.list_videos()
+        videos = temp_db.get_all_videos()
         assert len(videos) >= 1
         assert any(v["id"] == sample_video_dict["id"] for v in videos)
     
     def test_update_video_status(self, temp_db, sample_video_dict):
         """Test updating video status"""
         temp_db.add_video(sample_video_dict)
-        temp_db.update_video(sample_video_dict["id"], {"status": "completed"})
+        result = temp_db.update_video(sample_video_dict["id"], {"status": "completed"})
+        assert result is True
         
         video = temp_db.get_video(sample_video_dict["id"])
         assert video["status"] == "completed"
@@ -153,10 +154,69 @@ class TestDatabase:
     def test_delete_video(self, temp_db, sample_video_dict):
         """Test deleting a video"""
         temp_db.add_video(sample_video_dict)
-        temp_db.delete_video(sample_video_dict["id"])
+        result = temp_db.delete_video(sample_video_dict["id"])
+        assert result is True
         
         video = temp_db.get_video(sample_video_dict["id"])
         assert video is None
+    
+    def test_jersey_mapping_operations(self, temp_db, sample_video_dict):
+        """Test jersey mapping CRUD operations"""
+        # First add a video
+        temp_db.add_video(sample_video_dict)
+        video_id = sample_video_dict["id"]
+        
+        # Add jersey mapping
+        result = temp_db.set_jersey_mapping(video_id, track_id=1, jersey_number=10, frame=100)
+        assert result is True
+        
+        # Get jersey mappings
+        mappings = temp_db.get_jersey_mappings(video_id)
+        assert "1" in mappings
+        assert mappings["1"]["jersey_number"] == 10
+        
+        # Delete jersey mapping
+        result = temp_db.delete_jersey_mapping(video_id, track_id=1)
+        assert result is True
+        
+        # Verify deletion
+        mappings = temp_db.get_jersey_mappings(video_id)
+        assert "1" not in mappings
+    
+    def test_add_and_get_task(self, temp_db, sample_video_dict):
+        """Test analysis task operations"""
+        temp_db.add_video(sample_video_dict)
+        
+        task_data = {
+            "task_id": "task-123",
+            "video_id": sample_video_dict["id"],
+            "status": "processing",
+            "progress": 0
+        }
+        
+        result = temp_db.add_task(task_data)
+        assert result is True
+        
+        task = temp_db.get_task("task-123")
+        assert task is not None
+        assert task["video_id"] == sample_video_dict["id"]
+    
+    def test_update_task(self, temp_db, sample_video_dict):
+        """Test updating task status"""
+        temp_db.add_video(sample_video_dict)
+        
+        task_data = {
+            "task_id": "task-456",
+            "video_id": sample_video_dict["id"],
+            "status": "processing"
+        }
+        temp_db.add_task(task_data)
+        
+        result = temp_db.update_task("task-456", {"status": "completed", "progress": 100})
+        assert result is True
+        
+        task = temp_db.get_task("task-456")
+        assert task["status"] == "completed"
 
 
 # ============================================================================
@@ -189,6 +249,11 @@ class TestAPIEndpoints:
     def test_get_nonexistent_video(self, client):
         """Test getting a video that doesn't exist"""
         response = client.get("/videos/nonexistent-id-12345")
+        assert response.status_code == 404
+    
+    def test_delete_nonexistent_video(self, client):
+        """Test deleting a video that doesn't exist"""
+        response = client.delete("/videos/nonexistent-id-99999")
         assert response.status_code == 404
 
 
@@ -230,6 +295,24 @@ class TestVolleyballAnalyzer:
         assert hasattr(analyzer, "ball_frame_buffer")
         assert isinstance(analyzer.ball_frame_buffer, list)
         assert len(analyzer.ball_frame_buffer) == 0
+    
+    def test_tracker_initialized(self):
+        """Test that Norfair tracker is properly initialized"""
+        from processor import VolleyballAnalyzer
+        
+        analyzer = VolleyballAnalyzer()
+        assert hasattr(analyzer, "tracker")
+        assert analyzer.tracker is not None
+    
+    def test_jersey_caches_initialized(self):
+        """Test that jersey number caches are initialized"""
+        from processor import VolleyballAnalyzer
+        
+        analyzer = VolleyballAnalyzer()
+        assert hasattr(analyzer, "jersey_number_cache")
+        assert isinstance(analyzer.jersey_number_cache, dict)
+        assert hasattr(analyzer, "jersey_to_stable_id")
+        assert isinstance(analyzer.jersey_to_stable_id, dict)
 
 
 # ============================================================================
@@ -242,41 +325,49 @@ class TestLogger:
     def test_setup_logger(self):
         """Test logger setup"""
         from logger import setup_logger
+        import logging
         
-        logger = setup_logger("test_logger")
-        assert logger.name == "test_logger"
+        # Clear existing handlers for test
+        logging.getLogger("test_setup").handlers = []
+        
+        logger = setup_logger("test_setup")
+        assert logger.name == "test_setup"
         assert len(logger.handlers) > 0
     
     def test_get_logger(self):
         """Test getting existing logger"""
         from logger import get_logger
         
-        logger1 = get_logger("test_get_logger")
-        logger2 = get_logger("test_get_logger")
+        logger1 = get_logger("test_singleton")
+        logger2 = get_logger("test_singleton")
         assert logger1 is logger2
     
     def test_ai_logger(self):
         """Test AILogger class"""
         from logger import AILogger
         
-        ai_logger = AILogger("test_ai")
+        ai_logger = AILogger("test_ai_logger")
         
         # These should not raise exceptions
         ai_logger.device_detected("cpu")
         ai_logger.device_detected("cuda", "RTX 3080")
         ai_logger.device_detected("mps")
         ai_logger.warning("Test warning")
+        ai_logger.error("Test error")
     
     def test_api_logger(self):
         """Test APILogger class"""
         from logger import APILogger
         
-        api_logger = APILogger("test_api")
+        api_logger = APILogger("test_api_logger")
         
         # These should not raise exceptions
         api_logger.request("GET", "/health", 200)
         api_logger.upload("test.mp4", 10.5)
         api_logger.websocket_connected("video-123")
+        api_logger.websocket_disconnected("video-123")
+        api_logger.analysis_started("video-123", "task-456")
+        api_logger.analysis_completed("video-123", 30.5)
 
 
 # ============================================================================
@@ -285,3 +376,4 @@ class TestLogger:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])
+
