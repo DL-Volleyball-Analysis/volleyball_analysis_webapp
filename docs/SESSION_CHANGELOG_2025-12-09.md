@@ -117,7 +117,7 @@ Structured logging module with:
 - `APILogger` - API service specialized logger
 
 **Features:**
-- Emoji-prefixed log messages for visual clarity
+- Clean, professional log messages without emojis
 - Structured methods: `device_detected()`, `model_loaded()`, `analysis_start()`, etc.
 - Supports file logging with UTF-8 encoding
 
