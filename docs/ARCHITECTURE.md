@@ -42,6 +42,21 @@ graph TB
         Norfair --> YOLOv8
     end
 
+    subgraph Docker["Docker Containerization"]
+        DockerCompose["Docker Compose"]
+        FrontendContainer["Frontend Container<br/>(Nginx)"]
+        BackendContainer["Backend Container<br/>(FastAPI)"]
+        WorkerContainer["AI Worker Container<br/>(Celery)"]
+        RedisContainer["Redis Container"]
+        PostgresContainer["PostgreSQL Container<br/>(Optional)"]
+        
+        DockerCompose --> FrontendContainer
+        DockerCompose --> BackendContainer
+        DockerCompose --> WorkerContainer
+        DockerCompose --> RedisContainer
+        DockerCompose --> PostgresContainer
+    end
+
     subgraph Testing["Testing"]
         Jest["Jest<br/>Frontend Testing"]
         Pytest["pytest<br/>Backend Testing"]
@@ -53,13 +68,17 @@ graph TB
     SQLite -->|Data Retrieval| FastAPI
     FastAPI -->|WebSocket Updates| Frontend
     
+    DockerCompose -.->|Orchestrates| Backend
+    DockerCompose -.->|Orchestrates| AI
+    
     Jest -.->|Tests| React
     Pytest -.->|Tests| FastAPI
 
     style Frontend fill:#e1f5ff
     style Backend fill:#fff4e1
     style AI fill:#e8f5e9
-    style Testing fill:#f3e5f5
+    style Docker fill:#f3e5f5
+    style Testing fill:#fff9c4
 ```
 
 ## Component Details
@@ -117,6 +136,104 @@ graph TB
 - **Norfair** - Multi-object tracking
 - **Ultralytics** - YOLO model implementation
 - **ONNX Runtime** - ONNX model inference
+
+## Docker Containerization
+
+### Docker Architecture
+
+The system is fully containerized using Docker Compose, providing:
+- **Isolated environments** for each service
+- **Easy deployment** and scaling
+- **Consistent development** and production environments
+- **Service orchestration** with automatic dependency management
+
+### Docker Services
+
+#### 1. Frontend Container
+- **Base Image**: `node:18-alpine` (build) → `nginx:alpine` (production)
+- **Build Process**: Multi-stage build for optimized image size
+- **Port**: 80 (mapped to host port 3000)
+- **Features**:
+  - React app built and served via Nginx
+  - SPA routing support
+  - Static file serving
+
+#### 2. Backend Container
+- **Base Image**: `python:3.11-slim`
+- **Port**: 8000
+- **Dependencies**: FastAPI, Uvicorn, all Python requirements
+- **Features**:
+  - FastAPI application server
+  - SQLite database access
+  - WebSocket support
+  - Volume mounts for data and models
+
+#### 3. AI Worker Container
+- **Base Image**: `python:3.11-slim`
+- **Dependencies**: PyTorch, OpenCV, YOLO models, Celery
+- **Features**:
+  - Celery worker for async task processing
+  - GPU support (if available)
+  - Volume mounts for models and data
+  - Redis connection for task queue
+
+#### 4. Redis Container
+- **Base Image**: `redis:7-alpine`
+- **Port**: 6379
+- **Features**:
+  - Persistent storage with AOF (Append Only File)
+  - Message broker for Celery
+  - Result backend for task results
+
+#### 5. PostgreSQL Container (Optional)
+- **Base Image**: `postgres:15-alpine`
+- **Port**: 5432
+- **Features**:
+  - Persistent data storage
+  - Can replace SQLite for production
+  - Volume mounts for data persistence
+
+### Docker Compose Configuration
+
+```yaml
+version: '3.8'
+
+services:
+  redis:          # Message broker
+  postgres:       # Database (optional)
+  backend:        # FastAPI server
+  ai_worker:      # Celery worker
+  frontend:       # React app (Nginx)
+```
+
+### Dockerfile Locations
+
+- `backend/Dockerfile` - Backend API service
+- `ai_core/Dockerfile` - AI processing worker
+- `frontend/Dockerfile` - Frontend application (multi-stage build)
+
+### Running with Docker
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild after code changes
+docker-compose up -d --build
+```
+
+### Volume Mounts
+
+- `./data` → `/app/data` - Video uploads and results
+- `./models` → `/app/models` - AI model files
+- `redis_data` - Redis persistent storage
+- `postgres_data` - PostgreSQL persistent storage
 
 ## Data Flow
 
@@ -179,16 +296,26 @@ graph TB
 ## Deployment Architecture
 
 ### Development
+- **Local**: `start.sh` script runs services directly
+- **Docker**: `docker-compose up` for containerized development
 - Frontend: `npm start` (React dev server on port 3000)
 - Backend: `uvicorn main:app --reload` (FastAPI on port 8000)
 - Celery: `celery -A worker worker --loglevel=info`
-- Redis: Local Redis instance
+- Redis: Local Redis instance or Docker container
 
 ### Production
-- Frontend: Static build deployed to GitHub Pages
-- Backend: FastAPI with Uvicorn ASGI server
-- Celery: Production worker with Redis broker
-- Database: SQLite (can be migrated to PostgreSQL)
+- **Docker Compose**: Full containerized deployment
+- Frontend: Static build served via Nginx in container
+- Backend: FastAPI with Uvicorn ASGI server in container
+- Celery: Production worker with Redis broker in container
+- Database: SQLite (can be migrated to PostgreSQL container)
+
+### Docker Benefits
+- **Consistency**: Same environment across dev/staging/production
+- **Isolation**: Services don't interfere with each other
+- **Scalability**: Easy to scale individual services
+- **Portability**: Run anywhere Docker is installed
+- **Dependency Management**: All dependencies bundled in containers
 
 ## Technology Stack Summary
 
@@ -199,7 +326,7 @@ graph TB
 | **Styling** | Tailwind CSS |
 | **Backend Framework** | FastAPI |
 | **Backend Language** | Python 3.11+ |
-| **Database** | SQLite |
+| **Database** | SQLite / PostgreSQL |
 | **Task Queue** | Celery |
 | **Message Broker** | Redis |
 | **Real-time Communication** | WebSocket |
@@ -209,6 +336,7 @@ graph TB
 | **OCR** | EasyOCR (optional) |
 | **ML Framework** | PyTorch |
 | **Computer Vision** | OpenCV |
+| **Containerization** | Docker + Docker Compose |
 | **Frontend Testing** | Jest |
 | **Backend Testing** | pytest |
 
@@ -221,6 +349,7 @@ graph TB
   - Player Detection Confidence: ≥50%
 - **Test Coverage**: 71.78% frontend, comprehensive backend tests
 - **Video Support**: Up to 2GB file size
+- **Docker**: Multi-stage builds for optimized image sizes
 
 ## Security Considerations
 
@@ -229,4 +358,6 @@ graph TB
 - File upload validation and size limits
 - CORS configuration for API endpoints
 - Input validation on all API endpoints
+- Docker container isolation
+- Volume mounts with proper permissions
 

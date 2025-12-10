@@ -24,42 +24,52 @@ services:
 
   # 後端API服務
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/volleyball_analysis
       - REDIS_URL=redis://redis:6379/0
-      - BALL_MODEL_PATH=/app/models/ball_model.onnx
-      - ACTION_MODEL_PATH=/app/models/action_model.pt
+      - BALL_MODEL_PATH=/app/models/VballNetV1_seq9_grayscale_148_h288_w512.onnx
+      - ACTION_MODEL_PATH=/app/models/action_recognition_yv11m.pt
+      - PLAYER_MODEL_PATH=/app/models/player_detection_yv8.pt
     volumes:
       - ./data:/app/data
       - ./models:/app/models
     depends_on:
       - postgres
       - redis
+    working_dir: /app/backend
 
   # AI處理工作器
   ai_worker:
-    build: ./ai_core
+    build:
+      context: .
+      dockerfile: ai_core/Dockerfile
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - BALL_MODEL_PATH=/app/models/ball_model.onnx
-      - ACTION_MODEL_PATH=/app/models/action_model.pt
+      - BALL_MODEL_PATH=/app/models/VballNetV1_seq9_grayscale_148_h288_w512.onnx
+      - ACTION_MODEL_PATH=/app/models/action_recognition_yv11m.pt
+      - PLAYER_MODEL_PATH=/app/models/player_detection_yv8.pt
+      - DEVICE=cpu
     volumes:
       - ./data:/app/data
       - ./models:/app/models
     depends_on:
       - redis
-    command: celery -A worker worker --loglevel=info
+    working_dir: /app/ai_core
 
   # 前端服務
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_API_URL=http://backend:8000
     depends_on:
       - backend
 
