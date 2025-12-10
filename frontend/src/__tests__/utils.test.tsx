@@ -497,24 +497,25 @@ describe('API Response Handling', () => {
 
 describe('Error Handling', () => {
     it('should handle null/undefined gracefully', () => {
-        const safeGet = <T>(value: T | null | undefined, defaultValue: T): T =>
-            value ?? defaultValue;
+        function safeGet<T>(value: T | null | undefined, defaultValue: T): T {
+            return value ?? defaultValue;
+        }
 
-            expect(safeGet(null, 'default')).toBe('default');
-            expect(safeGet(undefined, 0)).toBe(0);
-            expect(safeGet('value', 'default')).toBe('value');
-  });
+        expect(safeGet(null, 'default')).toBe('default');
+        expect(safeGet(undefined, 0)).toBe(0);
+        expect(safeGet('value', 'default')).toBe('value');
+    });
 
-  it('should validate video file extension', () => {
-    const validExtensions = ['.mp4', '.avi', '.mov', '.mkv', '.webm'];
-    const isValidVideoFile = (filename: string) => {
-      const ext = filename.slice(filename.lastIndexOf('.')).toLowerCase();
+    it('should validate video file extension', () => {
+        const validExtensions = ['.mp4', '.avi', '.mov', '.mkv', '.webm'];
+        const isValidVideoFile = (filename: string): boolean => {
+            const ext = filename.slice(filename.lastIndexOf('.')).toLowerCase();
             return validExtensions.includes(ext);
-    };
+        };
 
-            expect(isValidVideoFile('video.mp4')).toBe(true);
-            expect(isValidVideoFile('video.MP4')).toBe(true);
-            expect(isValidVideoFile('video.txt')).toBe(false);
-            expect(isValidVideoFile('video.png')).toBe(false);
-  });
+        expect(isValidVideoFile('video.mp4')).toBe(true);
+        expect(isValidVideoFile('video.MP4')).toBe(true);
+        expect(isValidVideoFile('video.txt')).toBe(false);
+        expect(isValidVideoFile('video.png')).toBe(false);
+    });
 });
