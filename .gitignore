@@ -110,6 +110,13 @@ nosetests.xml
 coverage.xml
 *.cover
 
+# Frontend coverage reports (auto-generated)
+frontend/coverage/
+frontend/.coverage
+frontend/coverage-final.json
+frontend/lcov.info
+frontend/clover.xml
+
 # ============================================
 # Logs & Temporary Files
 # ============================================
