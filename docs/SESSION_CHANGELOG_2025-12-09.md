@@ -214,12 +214,17 @@ Structured logging module with:
 | `StatusBadge.tsx` | **100%** |
 | `EmptyState.tsx` | **100%** |
 | `PlayerTaggingDialog.tsx` | **45.45%** |
+| `VideoLibrary.tsx` | **40.24%** |
+| `PlaySelector.tsx` | **31.81%** |
 | `VideoUpload.tsx` | **19.48%** |
-| **Total Frontend Statements** | **4.76%** |
+| `PlayerHeatmap.tsx` | **19.04%** |
+| `BallTracking.tsx` | **8.6%** |
+| `App.tsx` | **7.14%** |
+| **Total Frontend Statements** | **10.59%** |
 
 **Test Totals:**
 - Backend: **71 passed**
-- Frontend: **97 passed, 4 skipped**
+- Frontend: **116 passed, 6 skipped**
 
 **New Config Files:**
 - `pytest.ini` - Pytest configuration
