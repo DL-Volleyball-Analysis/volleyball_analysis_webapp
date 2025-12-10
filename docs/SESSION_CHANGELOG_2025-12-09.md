@@ -130,21 +130,64 @@ Structured logging module with:
 | Test Class | Tests | Status |
 |------------|-------|--------|
 | `TestPathResolution` | 3 tests | ✅ |
-| `TestDatabase` | 5 tests | ✅ |
-| `TestAPIEndpoints` | 3 tests | ✅ |
-| `TestVolleyballAnalyzer` | 4 tests | ✅ |
+| `TestDatabase` | 9 tests | ✅ |
+| `TestAPIEndpoints` | 4 tests | ✅ |
+| `TestVolleyballAnalyzer` | 6 tests | ✅ |
 | `TestLogger` | 4 tests | ✅ |
+
+**API Tests: `tests/test_api.py`**
+
+| Test Class | Tests | Status |
+|------------|-------|--------|
+| `TestBasicEndpoints` | 4 tests | ✅ |
+| `TestVideoCRUD` | 3 tests | ✅ |
+| `TestAnalysisEndpoints` | 3 tests | ✅ |
+| `TestJerseyMappingEndpoints` | 2 tests | ✅ |
+| `TestInputValidation` | 3 tests | ✅ |
+| `TestPathResolution` | 5 tests | ✅ |
+| `TestDatabaseViaAPI` | 1 test | ✅ |
+| `TestErrorResponses` | 2 tests | ✅ |
+
+**Integration Tests: `tests/test_integration.py`**
+
+| Test Class | Tests | Status |
+|------------|-------|--------|
+| `TestAPIIntegration` | 6 tests | ✅ |
+| `TestProcessorPreprocessing` | 2 tests | ✅ |
+| `TestProcessorDetection` | 5 tests | ✅ |
+| `TestProcessorPostprocessing` | 3 tests | ✅ |
+| `TestDatabaseIntegration` | 2 tests | ✅ |
+| `TestPlayerTracker` | 3 tests | ✅ |
+| `TestLoggerIntegration` | 2 tests | ✅ |
 
 **Frontend Tests: `frontend/src/__tests__/utils.test.tsx`**
 
 | Test Suite | Tests |
 |------------|-------|
-| Type Definitions | 2 tests |
-| Action Styles | 8 tests |
-| Utility Functions | 10 tests |
-| Data Transformations | 4 tests |
+| Action Types and Styling | 8 tests |
+| Utility Functions | 20 tests |
+| Data Transformations | 6 tests |
+| Video Info Processing | 4 tests |
+| Player Stats Calculations | 3 tests |
+| Ball Tracking Data | 4 tests |
+| Timeline Calculations | 2 tests |
+| API Response Handling | 3 tests |
+| Error Handling | 2 tests |
 
-**New Config: `pytest.ini`** - Pytest configuration
+---
+
+#### Test Coverage Results
+
+| Module | Coverage |
+|--------|----------|
+| `ai_core/logger.py` | **92%** |
+| `backend/database.py` | **81%** |
+| `backend/main.py` | **36%** |
+| `ai_core/processor.py` | **18%** |
+| **Total** | **32%** |
+
+**New Config Files:**
+- `pytest.ini` - Pytest configuration
 
 ## 📅 December 7-9, 2025 Session
 
