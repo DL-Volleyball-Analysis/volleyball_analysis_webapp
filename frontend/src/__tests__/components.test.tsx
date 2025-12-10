@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
@@ -326,6 +326,23 @@ describe('VideoUpload Component', () => {
         renderWithRouter(<VideoUpload />);
         expect(screen.getByText('Select File')).toBeInTheDocument();
     });
+
+    it('handles file selection', async () => {
+        const api = require('../services/api');
+        api.uploadVideo.mockResolvedValue({ video_id: 'test-123' });
+        
+        renderWithRouter(<VideoUpload />);
+        
+        const file = new File(['video content'], 'test.mp4', { type: 'video/mp4' });
+        const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+        
+        if (input) {
+            fireEvent.change(input, { target: { files: [file] } });
+            await waitFor(() => {
+                expect(api.uploadVideo).toHaveBeenCalled();
+            });
+        }
+    });
 });
 
 // ============================================================================
@@ -430,6 +447,66 @@ describe('PlayerTaggingDialog Component', () => {
         );
         const confirmButton = screen.getByText('Confirm').closest('button');
         expect(confirmButton).toBeDisabled();
+    });
+
+    it('enables confirm button when input has value', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        const input = screen.getByPlaceholderText('Enter jersey number');
+        fireEvent.change(input, { target: { value: '7' } });
+        const confirmButton = screen.getByText('Confirm').closest('button');
+        expect(confirmButton).not.toBeDisabled();
+    });
+
+    it('calls onConfirm with jersey number when confirmed', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        const input = screen.getByPlaceholderText('Enter jersey number');
+        fireEvent.change(input, { target: { value: '7' } });
+        const confirmButton = screen.getByText('Confirm').closest('button');
+        fireEvent.click(confirmButton!);
+        expect(mockOnConfirm).toHaveBeenCalledWith(7);
+    });
+
+    it('handles Enter key to confirm', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        const input = screen.getByPlaceholderText('Enter jersey number');
+        fireEvent.change(input, { target: { value: '7' } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+        expect(mockOnConfirm).toHaveBeenCalledWith(7);
+    });
+
+    it('handles Escape key to cancel', () => {
+        render(
+            <PlayerTaggingDialog
+                player={mockPlayer}
+                currentFrame={100}
+                onClose={mockOnClose}
+                onConfirm={mockOnConfirm}
+            />
+        );
+        const input = screen.getByPlaceholderText('Enter jersey number');
+        fireEvent.keyDown(input, { key: 'Escape' });
+        expect(mockOnClose).toHaveBeenCalled();
     });
 });
 

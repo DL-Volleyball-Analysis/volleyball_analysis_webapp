@@ -242,6 +242,22 @@ describe('BallTracking Component', () => {
         render(<BallTracking {...props} />);
         // Should render trajectory visualization
     });
+
+    it('renders with ball trajectory data', () => {
+        const props = {
+            ballTrajectory: [
+                { frame: 0, timestamp: 0, center: [100, 200], bbox: [90, 190, 110, 210], confidence: 0.9 },
+                { frame: 30, timestamp: 1.0, center: [150, 180], bbox: [140, 170, 160, 190], confidence: 0.85 },
+            ],
+            currentTime: 0.5,
+            fps: 30,
+            videoSize: { width: 1920, height: 1080 },
+            enabled: true
+        };
+        const { container } = render(<BallTracking {...props} />);
+        const canvas = container.querySelector('canvas');
+        expect(canvas).toBeInTheDocument();
+    });
 });
 
 // ============================================================================
@@ -307,6 +323,32 @@ describe('PlaySelector Component', () => {
         };
         render(<PlaySelector {...props} />);
     });
+
+    it('handles play selection', () => {
+        const onSeek = jest.fn();
+        const props = {
+            plays: [
+                {
+                    play_id: 1,
+                    start_frame: 0,
+                    start_timestamp: 0,
+                    end_frame: 300,
+                    end_timestamp: 10,
+                    duration: 10,
+                    actions: [],
+                    scores: []
+                }
+            ],
+            currentTime: 5,
+            fps: 30,
+            onSeek
+        };
+        render(<PlaySelector {...props} />);
+        
+        const playButton = screen.getByText(/Play #1/i);
+        fireEvent.click(playButton);
+        expect(onSeek).toHaveBeenCalledWith(0);
+    });
 });
 
 // ============================================================================
@@ -333,6 +375,27 @@ describe('PlayerHeatmap Component', () => {
             videoInfo: { width: 1920, height: 1080, fps: 30 },
         };
         render(<PlayerHeatmap {...props} />);
+    });
+
+    it('renders with player tracks data', () => {
+        const props = {
+            playerTracks: [
+                {
+                    frame: 0,
+                    players: [
+                        { id: 1, bbox: [100, 100, 200, 400] },
+                        { id: 2, bbox: [300, 100, 400, 400] }
+                    ]
+                }
+            ],
+            videoSize: { width: 1920, height: 1080 },
+            enabled: true,
+            currentTime: 0,
+            fps: 30
+        };
+        const { container } = render(<PlayerHeatmap {...props} />);
+        const canvas = container.querySelector('canvas');
+        expect(canvas).toBeInTheDocument();
     });
 });
 
