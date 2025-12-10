@@ -116,6 +116,9 @@ class VolleyballAnalyzer:
         self.jersey_to_track_ids = {}  # 球衣號碼 -> [track_ids] 映射（用於追蹤穩定性）
         self.next_stable_id = 1  # 下一個穩定ID
         self.track_id_to_jersey_history = {}  # 追蹤ID -> [jersey_numbers] 歷史記錄（用於多幀融合）
+        
+        # 球追蹤緩衝區（VballNet 需要 9 幀序列輸入）
+        self.ball_frame_buffer: List[np.ndarray] = []
     
     def load_ball_model(self, model_path: str):
         """載入球追蹤模型 (ONNX)"""

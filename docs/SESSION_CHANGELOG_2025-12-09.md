@@ -1,10 +1,79 @@
 # Volleyball AI Analysis System - Session Changelog
 
-This document summarizes all the changes and improvements made during the development session on **December 7-9, 2025**.
+This document summarizes all the changes and improvements made during development sessions.
 
 ---
 
-## 🎯 Summary
+## 📅 December 10, 2025 Session
+
+### 🎯 Summary
+
+This session focused on:
+1. **Action Icons Update** - Replaced emoji/SVG icons with custom PNG action icons
+2. **Bug Fixes** - Fixed `ball_frame_buffer` initialization issue
+3. **Code Quality** - Cleaned up unused imports
+
+---
+
+### 📦 Changes by Component
+
+#### Frontend - Action Icons Update
+
+**`EventTimeline.tsx`**
+- **Changed** Action markers from text abbreviations ("SPI", "SET", etc.) to PNG icons
+- **Updated** `getActionStyle()` to include `image` path for each action type
+- **Updated** `ActionLegend` component to display PNG icons instead of colored squares
+- **Changed** Marker styling to white/translucent background with border to showcase icons
+
+**`PlayerStats.tsx`**
+- **Changed** `getActionIcon()` from Lucide icons to PNG images
+- **Removed** Unused imports: `Zap`, `Hand`, `Shield`, `Target`, `Box`
+
+**New Files**
+| File | Description |
+|------|-------------|
+| `frontend/public/block.png` | Block action icon |
+| `frontend/public/recieve.png` | Receive action icon |
+| `frontend/public/serve.png` | Serve action icon |
+| `frontend/public/set.png` | Set action icon |
+| `frontend/public/spike.png` | Spike action icon |
+| `frontend/src/components/icons/VolleyballIcons.tsx` | Icon component utilities |
+
+---
+
+#### AI Core - Bug Fix
+
+**`processor.py`**
+- **Fixed** `ball_frame_buffer` not initialized in `__init__` method
+  - Previously: Buffer was used in `detect_ball()` without initialization
+  - Now: `self.ball_frame_buffer: List[np.ndarray] = []` added to `__init__`
+
+---
+
+#### Documentation
+
+**Moved Files**
+| From | To |
+|------|-----|
+| `JERSEY_NUMBER_DETECTION_COMPARISON.md` | `docs/JERSEY_NUMBER_DETECTION_COMPARISON.md` |
+| `OCR_WORKFLOW.md` | `docs/OCR_WORKFLOW.md` |
+
+**New Files**
+| File | Description |
+|------|-------------|
+| `docs/SESSION_CHANGELOG_2025-12-09.md` | This changelog file |
+
+---
+
+### 📊 Git Commits (Dec 10)
+
+1. `feat: replace emoji/SVG icons with PNG action icons for timeline and player stats`
+
+---
+
+## 📅 December 7-9, 2025 Session
+
+### 🎯 Summary
 
 This session focused on three major areas:
 1. **Real-time WebSocket Analysis** - Replaced HTTP polling with WebSocket for live progress updates
@@ -13,27 +82,27 @@ This session focused on three major areas:
 
 ---
 
-## 📦 Changes by Component
+### 📦 Changes by Component
 
-### Backend (`backend/main.py`)
+#### Backend (`backend/main.py`)
 
-#### WebSocket Real-time Analysis
+**WebSocket Real-time Analysis**
 - **Added** `/ws/analysis/{video_id}` endpoint - Starts analysis and streams progress in real-time
 - **Added** `/ws/progress/{video_id}` endpoint - Monitors existing analysis progress (doesn't start new analysis)
 - **Added** `ConnectionManager` class for WebSocket connection management
 - **Fixed** Model paths in WebSocket endpoint to match correct file names
 - **Changed** Progress messages from Chinese to English
 
-#### Database
+**Database**
 - **Added** `backend/database.py` - SQLite database module with full CRUD operations
 - **Migrated** from JSON file storage to SQLite database
 - **Added** Auto-migration logic from JSON to SQLite
 
 ---
 
-### AI Core (`ai_core/processor.py`)
+#### AI Core (`ai_core/processor.py`)
 
-#### Ball Tracking Algorithm Improvements
+**Ball Tracking Algorithm Improvements**
 | Function | Changes |
 |----------|---------|
 | `_filter_ball_trajectory()` | Complete rewrite with physics-based approach |
@@ -42,7 +111,7 @@ This session focused on three major areas:
 | `_smooth_ball_trajectory()` | Enhanced Gaussian-weighted smoothing |
 | `_interpolate_missing_frames()` | **Improved** - Quadratic (parabolic) interpolation instead of linear |
 
-#### Key Improvements:
+**Key Improvements:**
 - **Outlier Detection**: Uses sliding window polynomial fitting (linear for X, quadratic for Y)
 - **Dynamic Threshold**: Automatically adjusts based on median deviation scores
 - **Parabolic Interpolation**: Predicts missing ball positions using physics model
@@ -50,16 +119,16 @@ This session focused on three major areas:
 
 ---
 
-### Frontend (`frontend/src/`)
+#### Frontend (`frontend/src/`)
 
-#### New Pages
+**New Pages**
 | File | Description |
 |------|-------------|
 | `components/Privacy.tsx` | Privacy policy page |
 | `components/Terms.tsx` | Terms of service page |
 | `components/Support.tsx` | Support page with FAQ and contact info |
 
-#### Updated Components
+**Updated Components**
 
 **`App.tsx`**
 - Added routes for `/privacy`, `/terms`, `/support`
@@ -84,29 +153,9 @@ This session focused on three major areas:
 
 ---
 
-### Website (`website/`)
+### 🔧 Technical Details
 
-**`app/contact/page.tsx`**
-- Fixed text colors (added `text-white` to headings)
-- Added `text-slate-200` to form labels
-
----
-
-## 🗂️ File Operations
-
-| Action | Path |
-|--------|------|
-| **Created** | `backend/database.py` |
-| **Created** | `frontend/src/components/Privacy.tsx` |
-| **Created** | `frontend/src/components/Terms.tsx` |
-| **Created** | `frontend/src/components/Support.tsx` |
-| **Deleted** | `backend/data/` (empty duplicate folder) |
-
----
-
-## 🔧 Technical Details
-
-### WebSocket Architecture
+#### WebSocket Architecture
 
 ```
 VideoUpload Component
@@ -124,7 +173,7 @@ VideoPlayer Component
 Reads progress from analysis_tasks dict
 ```
 
-### Ball Tracking Pipeline
+#### Ball Tracking Pipeline
 
 ```
 Raw Detections
@@ -142,7 +191,7 @@ Final Trajectory
 
 ---
 
-## 📊 Git Commits
+### 📊 Git Commits (Dec 7-9)
 
 1. `feat: Add WebSocket real-time analysis, footer pages, and UI improvements`
 2. `fix: Remove unused Clock import to fix CI build`
@@ -154,10 +203,12 @@ Final Trajectory
 
 To test the changes:
 
-1. **WebSocket Progress**: Upload a video and watch the real-time progress bar
-2. **Ball Tracking**: Check backend logs for trajectory processing statistics:
+1. **Action Icons**: Check EventTimeline and PlayerStats for PNG icons
+2. **WebSocket Progress**: Upload a video and watch the real-time progress bar
+3. **Ball Tracking**: Check backend logs for trajectory processing statistics:
    ```
    🎯 球軌跡處理: 原始 X 點 → 移除 Y 異常點 → 插值 Z 點 → 最終 W 點
    ```
-3. **New Pages**: Navigate to `/privacy`, `/terms`, `/support`
-4. **Mobile Menu**: Resize browser to mobile width and click hamburger menu
+4. **New Pages**: Navigate to `/privacy`, `/terms`, `/support`
+5. **Mobile Menu**: Resize browser to mobile width and click hamburger menu
+
