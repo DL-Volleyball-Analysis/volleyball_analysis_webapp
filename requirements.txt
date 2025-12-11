@@ -32,3 +32,8 @@ pydantic==1.10.8
 httpx==0.24.1
 aiofiles==23.1.0
 norfair>=2.0.0
+
+# 測試依賴
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0

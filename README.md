@@ -68,6 +68,22 @@ volleyball_analysis_webapp/
 │   ├── uploads/            # User uploaded videos
 │   └── results/            # Analysis results JSON
 │
+├── tests/                  # Test suite
+│   ├── conftest.py        # Shared test fixtures
+│   ├── test_database.py   # Database tests
+│   ├── test_logger.py     # Logger tests
+│   ├── test_main.py       # API endpoint tests
+│   ├── test_processor.py  # AI processor tests
+│   ├── test_integration.py # Integration tests
+│   └── README.md          # Test documentation
+│
+├── docs/                   # Documentation
+│   ├── README.md          # Documentation index
+│   ├── architecture/      # Architecture docs
+│   ├── testing/           # Testing docs
+│   ├── features/          # Feature docs
+│   └── changelog/         # Development logs
+│
 ├── tools/                  # Utility scripts
 │   └── utils/             # Helper utilities
 │
@@ -266,8 +282,8 @@ See full interactive API documentation at http://localhost:8000/docs
 
 ### Known Limitations
 
-1. **Database**: Currently uses in-memory storage (`videos_db`), data lost on restart
-   - Future: Integrate PostgreSQL
+1. **Database**: Currently uses SQLite for local storage
+   - Future: Migrate to PostgreSQL for production
 
 2. **Task Queue**: Uses FastAPI BackgroundTasks, not persistent
    - Future: Use Celery + Redis (worker.py already prepared)
@@ -278,6 +294,9 @@ See full interactive API documentation at http://localhost:8000/docs
 4. **Ball Detection**: Ball tracking may require model tuning for optimal performance
    - Detection sensitivity can be adjusted via confidence thresholds
 
+5. **Test Coverage**: Currently at ~63%, target is 70-80%
+   - Ongoing improvements to increase coverage
+
 ## Development
 
 ### Project Structure Guidelines
@@ -285,6 +304,8 @@ See full interactive API documentation at http://localhost:8000/docs
 - **Backend**: All API routes and business logic in `backend/`
 - **Frontend**: Components organized by feature in `frontend/src/components/`
 - **AI Core**: Model processing logic in `ai_core/`
+- **Tests**: Organized by module in `tests/`
+- **Documentation**: Organized by category in `docs/`
 - **Utilities**: Shared tools in `tools/`
 - **Scripts**: Development/testing scripts in `scripts/`
 
@@ -293,6 +314,43 @@ See full interactive API documentation at http://localhost:8000/docs
 - **Python**: Follow PEP 8, use type hints
 - **TypeScript**: Use strict mode, proper typing
 - **React**: Functional components with hooks
+
+### Documentation
+
+Project documentation is organized in the `docs/` folder:
+
+- **Architecture**: `docs/architecture/` - System architecture and design
+- **Testing**: `docs/testing/` - Test coverage reports and improvements
+- **Features**: `docs/features/` - Feature implementation details
+- **Changelog**: `docs/changelog/` - Development session logs
+
+See `docs/README.md` for the complete documentation index.
+
+### Testing
+
+The project includes comprehensive test suites:
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run with coverage report
+pytest tests/ --cov=backend --cov=ai_core --cov-report=html
+
+# Run specific test file
+pytest tests/test_main.py
+
+# View coverage report
+open htmlcov/index.html
+```
+
+**Test Coverage**: ~63% (target: 70-80%)
+- Backend API: 66%
+- AI Processor: 53%
+- Database: 84%
+- Logger: 92%
+
+See `tests/README.md` and `docs/testing/` for more details.
 
 ### Building for Production
 

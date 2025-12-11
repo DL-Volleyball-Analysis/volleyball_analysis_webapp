@@ -53,6 +53,9 @@ data/uploads/
 data/results/
 # JSON files in data directory (jersey_mappings.json, videos_db.json, etc.)
 data/*.json
+# Database files
+data/*.db
+data/*.sqlite
 backend/data/uploads/
 backend/data/results/
 static/uploads/
