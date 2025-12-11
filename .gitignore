@@ -91,6 +91,7 @@ models/weights/      # 仍然排除權重文件夾
 # ============================================
 .idea/
 .vscode/
+*.code-workspace
 *.swp
 *.swo
 *.sublime-project
