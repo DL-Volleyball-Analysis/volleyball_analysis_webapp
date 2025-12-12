@@ -465,7 +465,15 @@ export const PlayerStats: React.FC<PlayerStatsProps> = ({
 
   const handleStartEdit = (playerId: number) => {
     setEditingPlayerId(playerId);
-    setEditName(playerNames[playerId] || `Player #${playerId}`);
+    // 使用當前顯示的名稱來初始化編輯，而不是 playerNames[playerId]
+    // 因為顯示的名稱可能來自 getPlayerName（如 #5）或自定義名稱
+    const currentDisplayName = getPlayerName(playerId);
+    // 如果顯示的是球衣號碼格式（#5），則使用 playerNames 中的自定義名稱（如果存在）
+    // 否則使用當前顯示的名稱
+    const initialName = currentDisplayName.startsWith('#') 
+      ? (playerNames[playerId] || currentDisplayName)
+      : currentDisplayName;
+    setEditName(initialName);
   };
 
   const handleSaveEdit = (playerId: number) => {
