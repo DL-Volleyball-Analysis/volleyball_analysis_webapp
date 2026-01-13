@@ -116,7 +116,7 @@ export const HeroVideo = forwardRef<HeroVideoHandle>((props, ref) => {
 
                     <video
                         ref={videoRef}
-                        src={getAssetPath("/videos/demo.mp4")}
+                        src={getAssetPath("/videos/demo.mov")}
                         className="w-full h-full object-cover"
                         autoPlay
                         muted

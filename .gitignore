@@ -73,7 +73,7 @@ static/results/
 test_video/
 
 # Exception: allow website demo video
-!website/public/videos/demo.mp4
+!website/public/videos/demo.mov
 
 # ============================================
 # Models & Large Files

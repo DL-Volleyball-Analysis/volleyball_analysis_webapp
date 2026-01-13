@@ -19,8 +19,8 @@
 .DS_Store
 *.pem
 
-# large video files (use compressed mp4 instead)
-public/videos/demo.mov
+# large video files
+# public/videos/demo.mov  # using original for better quality
 
 # debug
 npm-debug.log*
