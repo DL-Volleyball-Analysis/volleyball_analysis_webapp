@@ -17,6 +17,19 @@ const config: Config = {
     },
     extend: {
       colors: {
+        // Mikasa Volleyball Colors
+        mikasa: {
+          blue: {
+            DEFAULT: "#0033A0",
+            light: "#1E4FC2",
+            dark: "#001F5C",
+          },
+          yellow: {
+            DEFAULT: "#FFD100",
+            light: "#FFE14D",
+            dark: "#E6BC00",
+          },
+        },
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
@@ -60,6 +73,10 @@ const config: Config = {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+      },
+      fontFamily: {
+        display: ["'Bebas Neue'", "sans-serif"],
+        body: ["'DM Sans'", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
