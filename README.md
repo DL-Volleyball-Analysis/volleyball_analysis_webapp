@@ -8,6 +8,8 @@ A modern web application for volleyball video analysis using AI-powered ball tra
 ![React](https://img.shields.io/badge/React-18.2-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+[![Website](https://img.shields.io/badge/Website-VolleyVision%20AI-0033A0)](https://dl-volleyball-analysis.github.io/volleyvision-website/)
+
 ---
 
 ## Features | 功能特色
@@ -111,6 +113,15 @@ Test Coverage | 測試覆蓋率: 59%
 ## License | 授權
 
 MIT License
+
+---
+
+## Related Projects | 相關專案
+
+| Project | Description |
+|---------|-------------|
+| [volleyvision-website](https://github.com/DL-Volleyball-Analysis/volleyvision-website) | Landing page website |
+| [volleyball-court-detection](https://github.com/DL-Volleyball-Analysis/volleyball-court-detection) | Court detection and ball landing |
 
 ---
 
