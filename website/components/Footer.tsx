@@ -14,9 +14,9 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-[#0033A0] rounded-sm flex items-center justify-center">
-                <span className="text-[#FFD100] font-bold" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>V</span>
+                <span className="text-[#FFD100] font-extrabold">V</span>
               </div>
-              <span className="text-[#FFD100] font-semibold" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em" }}>VolleyVision AI</span>
+              <span className="text-[#FFD100] font-extrabold tracking-tight">VolleyVision AI</span>
             </div>
             <p className="text-slate-400 text-sm">
               {t.footer.description}

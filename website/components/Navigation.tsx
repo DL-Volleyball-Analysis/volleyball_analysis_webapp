@@ -13,7 +13,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold text-[#FFD100]" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em" }}>VolleyVision AI</span>
+            <span className="text-xl font-extrabold text-[#FFD100] tracking-tight">VolleyVision AI</span>
           </Link>
 
           {/* Desktop Navigation */}

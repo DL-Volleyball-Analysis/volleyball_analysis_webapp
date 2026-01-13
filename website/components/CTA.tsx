@@ -21,7 +21,7 @@ export function CTA() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-white mb-6 text-4xl font-bold" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.02em" }}>
+          <h2 className="text-white mb-6 text-4xl font-extrabold tracking-tight">
             {isZh ? '準備好轉變您的排球分析了嗎？' : 'Ready to Transform Your Volleyball Analysis?'}
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">

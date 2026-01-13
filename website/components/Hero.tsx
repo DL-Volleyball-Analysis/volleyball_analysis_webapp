@@ -33,7 +33,7 @@ export function Hero() {
               <span className="text-[#FFD100] text-sm font-medium tracking-wide uppercase">{t.hero.badge}</span>
             </div>
 
-            <h1 className="text-white mb-6 font-bold" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 6vw, 4.5rem)", letterSpacing: "0.02em", lineHeight: 1.1 }}>
+            <h1 className="text-white mb-6 font-extrabold" style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
               {t.hero.title}
             </h1>
 

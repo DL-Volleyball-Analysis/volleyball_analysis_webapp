@@ -75,8 +75,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["'Bebas Neue'", "sans-serif"],
-        body: ["'DM Sans'", "sans-serif"],
+        display: ["'LINE Seed TW'", "'LINE Seed Sans'", "sans-serif"],
+        body: ["'LINE Seed TW'", "'LINE Seed Sans'", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* LINE Seed Font Family - loaded dynamically via FontLoader component */
+
 /* Mikasa Volleyball Inspired Color Palette */
 @layer base {
   :root {
@@ -75,7 +77,7 @@ html {
 }
 
 body {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'LINE Seed TW', 'LINE Seed Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background);
