@@ -19,6 +19,9 @@
 .DS_Store
 *.pem
 
+# large video files (use compressed mp4 instead)
+public/videos/demo.mov
+
 # debug
 npm-debug.log*
 yarn-debug.log*
