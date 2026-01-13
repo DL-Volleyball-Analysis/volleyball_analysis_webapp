@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const repoName = 'volleyball-analysis'
+const repoName = 'volleyball_analysis_webapp'
 const isProd = process.env.NODE_ENV === 'production'
 
 const nextConfig = {
