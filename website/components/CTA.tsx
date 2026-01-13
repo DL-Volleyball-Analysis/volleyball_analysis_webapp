@@ -30,7 +30,7 @@ export function CTA() {
               size="lg"
               variant="secondary"
               className="gap-2"
-              onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
+              onClick={() => window.open('https://github.com/DL-Volleyball-Analysis/volleyball_analysis_webapp', '_blank')}
             >
               {isZh ? '免費開始使用' : 'Get Started Free'}
               <ArrowRight className="w-5 h-5" />
@@ -39,7 +39,7 @@ export function CTA() {
               size="lg"
               variant="outline"
               className="gap-2 bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20"
-              onClick={() => window.open('https://github.com/itsYoga/volleyball-analysis', '_blank')}
+              onClick={() => window.open('https://github.com/DL-Volleyball-Analysis/volleyball_analysis_webapp', '_blank')}
             >
               <Github className="w-5 h-5" />
               {isZh ? '在 GitHub 查看' : 'View on GitHub'}

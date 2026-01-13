@@ -48,8 +48,8 @@ export function Tutorials() {
                                         {isZh ? '複製儲存庫' : 'Clone Repository'}
                                     </h3>
                                     <div className="bg-slate-950 p-4 rounded-lg font-mono text-sm border border-slate-800">
-                                        <p className="text-blue-400">git clone https://github.com/itsYoga/volleyball-analysis.git</p>
-                                        <p className="text-slate-500">cd volleyball-analysis</p>
+                                        <p className="text-blue-400">git clone https://github.com/DL-Volleyball-Analysis/volleyball_analysis_webapp.git</p>
+                                        <p className="text-slate-500">cd volleyball_analysis_webapp</p>
                                     </div>
                                 </div>
 

@@ -38,7 +38,7 @@ export default function Navigation() {
                 {language === 'en' ? '中文' : 'EN'}
               </button>
               <a
-                href="https://github.com/itsYoga"
+                href="https://github.com/DL-Volleyball-Analysis"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition"
@@ -87,7 +87,7 @@ export default function Navigation() {
                 {language === 'en' ? '中文' : 'EN'}
               </button>
               <a
-                href="https://github.com/itsYoga"
+                href="https://github.com/DL-Volleyball-Analysis"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium text-center"

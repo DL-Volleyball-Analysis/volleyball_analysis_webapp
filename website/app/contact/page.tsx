@@ -73,12 +73,12 @@ export default function Contact() {
                                         <div>
                                             <h3 className="font-medium text-white">GitHub</h3>
                                             <a
-                                                href="https://github.com/itsYoga/volleyball-analysis"
+                                                href="https://github.com/DL-Volleyball-Analysis/volleyball_analysis_webapp"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-slate-400 hover:text-blue-400 transition-colors"
                                             >
-                                                itsYoga/volleyball-analysis
+                                                DL-Volleyball-Analysis/volleyball_analysis_webapp
                                             </a>
                                         </div>
                                     </div>
