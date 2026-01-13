@@ -15,16 +15,16 @@ export function Demo() {
   const { t } = useLanguage();
 
   return (
-    <section id="demo" className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
-      {/* Decorative background elements */}
+    <section id="demo" className="py-24 bg-[#0A0E1A] relative overflow-hidden">
+      {/* Mikasa-inspired decorative background elements */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl mix-blend-screen animate-pulse"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full blur-3xl mix-blend-screen animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#0033A0] rounded-full blur-3xl mix-blend-screen animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FFD100] rounded-full blur-3xl mix-blend-screen animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full mb-4 backdrop-blur-sm">
+          <div className="inline-block px-4 py-2 bg-[#0033A0]/20 text-[#FFD100] border border-[#0033A0]/40 rounded-sm mb-4 backdrop-blur-sm">
             {t.demo.badge}
           </div>
           <h2 className="text-white text-4xl font-bold mb-4 tracking-tight">
@@ -81,28 +81,27 @@ export function Demo() {
                   <div className="absolute bottom-4 right-4">
                     <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      View Analysis
+                      {t.demo.viewAnalysis}
                     </Button>
                   </div>
                 </div>
                 <div className="p-8 bg-slate-900/90 border-t border-slate-700">
-                  <h3 className="text-white text-xl font-semibold mb-2">Real-time Player Detection</h3>
+                  <h3 className="text-white text-xl font-semibold mb-2">{t.demo.trackingTitle}</h3>
                   <p className="text-slate-400">
-                    Our AI tracks each player's position, movement speed, and orientation throughout the match.
-                    Bounding boxes and IDs are maintained even during occlusions.
+                    {t.demo.trackingDesc}
                   </p>
                   <div className="grid grid-cols-3 gap-4 mt-6">
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
                       <div className="text-blue-400 font-bold text-xl">12</div>
-                      <div className="text-sm text-slate-500">Players Tracked</div>
+                      <div className="text-sm text-slate-500">{t.demo.playersTracked}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
                       <div className="text-blue-400 font-bold text-xl">98.3%</div>
-                      <div className="text-sm text-slate-500">Accuracy</div>
+                      <div className="text-sm text-slate-500">{t.demo.accuracy}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
                       <div className="text-blue-400 font-bold text-xl">30 FPS</div>
-                      <div className="text-sm text-slate-500">Processing</div>
+                      <div className="text-sm text-slate-500">{t.demo.processing}</div>
                     </div>
                   </div>
                 </div>
@@ -124,28 +123,27 @@ export function Demo() {
                   <div className="absolute bottom-4 right-4">
                     <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      View Analysis
+                      {t.demo.viewAnalysis}
                     </Button>
                   </div>
                 </div>
                 <div className="p-8 bg-slate-900/90 border-t border-slate-700">
-                  <h3 className="text-white text-xl font-semibold mb-2">Action Recognition & Ball Tracking</h3>
+                  <h3 className="text-white text-xl font-semibold mb-2">{t.demo.ballTitle}</h3>
                   <p className="text-slate-400">
-                    Track the volleyball's path and identify key actions like serves, spikes, and blocks.
-                    Analyze velocities and predict landing zones with our advanced physics engine.
+                    {t.demo.ballDesc}
                   </p>
                   <div className="grid grid-cols-3 gap-4 mt-6">
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
                       <div className="text-orange-400 font-bold text-xl">5+</div>
-                      <div className="text-sm text-slate-500">Action Types</div>
+                      <div className="text-sm text-slate-500">{t.demo.actionTypes}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
                       <div className="text-orange-400 font-bold text-xl">±2cm</div>
-                      <div className="text-sm text-slate-500">Precision</div>
+                      <div className="text-sm text-slate-500">{t.demo.precision}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-orange-500/50 transition-colors">
                       <div className="text-orange-400 font-bold text-xl">100%</div>
-                      <div className="text-sm text-slate-500">Coverage</div>
+                      <div className="text-sm text-slate-500">{t.demo.coverage}</div>
                     </div>
                   </div>
                 </div>
@@ -167,28 +165,27 @@ export function Demo() {
                   <div className="absolute bottom-4 right-4">
                     <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      View Analysis
+                      {t.demo.viewAnalysis}
                     </Button>
                   </div>
                 </div>
                 <div className="p-8 bg-slate-900/90 border-t border-slate-700">
-                  <h3 className="text-white text-xl font-semibold mb-2">Automatic Court Detection</h3>
+                  <h3 className="text-white text-xl font-semibold mb-2">{t.demo.courtTitle}</h3>
                   <p className="text-slate-400">
-                    Our system automatically identifies court boundaries, zones, and lines regardless of camera angle.
-                    This enables accurate spatial analysis and positioning metrics.
+                    {t.demo.courtDesc}
                   </p>
                   <div className="grid grid-cols-3 gap-4 mt-6">
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
                       <div className="text-green-400 font-bold text-xl">6</div>
-                      <div className="text-sm text-slate-500">Zones Mapped</div>
+                      <div className="text-sm text-slate-500">{t.demo.zonesMapped}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
                       <div className="text-green-400 font-bold text-xl">Auto</div>
-                      <div className="text-sm text-slate-500">Calibration</div>
+                      <div className="text-sm text-slate-500">{t.demo.calibration}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-green-500/50 transition-colors">
                       <div className="text-green-400 font-bold text-xl">Any</div>
-                      <div className="text-sm text-slate-500">Camera Angle</div>
+                      <div className="text-sm text-slate-500">{t.demo.cameraAngle}</div>
                     </div>
                   </div>
                 </div>
@@ -210,28 +207,27 @@ export function Demo() {
                   <div className="absolute bottom-4 right-4">
                     <Button variant="secondary" size="sm" className="gap-2 shadow-lg hover:scale-105 transition-transform">
                       <Play className="w-4 h-4" />
-                      View Analysis
+                      {t.demo.viewAnalysis}
                     </Button>
                   </div>
                 </div>
                 <div className="p-8 bg-slate-900/90 border-t border-slate-700">
-                  <h3 className="text-white text-xl font-semibold mb-2">Advanced Statistics & Heat Maps</h3>
+                  <h3 className="text-white text-xl font-semibold mb-2">{t.demo.heatmapTitle}</h3>
                   <p className="text-slate-400">
-                    Visualize player coverage areas and movement patterns throughout the match.
-                    Identify hot zones, defensive gaps, and optimize positioning strategies.
+                    {t.demo.heatmapDesc}
                   </p>
                   <div className="grid grid-cols-3 gap-4 mt-6">
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
-                      <div className="text-purple-400 font-bold text-xl">Per Player</div>
-                      <div className="text-sm text-slate-500">Analysis</div>
+                      <div className="text-purple-400 font-bold text-xl">{t.demo.perPlayer}</div>
+                      <div className="text-sm text-slate-500">{t.demo.analysis}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
-                      <div className="text-purple-400 font-bold text-xl">Team</div>
-                      <div className="text-sm text-slate-500">Coverage</div>
+                      <div className="text-purple-400 font-bold text-xl">{t.demo.team}</div>
+                      <div className="text-sm text-slate-500">{t.demo.coverage}</div>
                     </div>
                     <div className="text-center p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-purple-500/50 transition-colors">
-                      <div className="text-purple-400 font-bold text-xl">Time</div>
-                      <div className="text-sm text-slate-500">Based</div>
+                      <div className="text-purple-400 font-bold text-xl">{t.demo.timeBased}</div>
+                      <div className="text-sm text-slate-500">{t.demo.analysis}</div>
                     </div>
                   </div>
                 </div>

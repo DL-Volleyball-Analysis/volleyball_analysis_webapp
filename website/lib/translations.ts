@@ -15,38 +15,39 @@ export interface Translations {
     watchDemo: string;
     getStarted: string;
   };
-  demo: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    tabs: {
-      tracking: string;
-      ball: string;
-      court: string;
-      heatmap: string;
+    demo: {
+      badge: string;
+      title: string;
+      subtitle: string;
+      tabs: {
+        tracking: string;
+        ball: string;
+        court: string;
+        heatmap: string;
+      };
+      trackingTitle: string;
+      trackingDesc: string;
+      ballTitle: string;
+      ballDesc: string;
+      courtTitle: string;
+      courtDesc: string;
+      heatmapTitle: string;
+      heatmapDesc: string;
+      viewAnalysis: string;
+      playersTracked: string;
+      accuracy: string;
+      processing: string;
+      actionTypes: string;
+      precision: string;
+      coverage: string;
+      zonesMapped: string;
+      calibration: string;
+      cameraAngle: string;
+      perPlayer: string;
+      analysis: string;
+      team: string;
+      timeBased: string;
     };
-    trackingTitle: string;
-    trackingDesc: string;
-    ballTitle: string;
-    ballDesc: string;
-    courtTitle: string;
-    courtDesc: string;
-    heatmapTitle: string;
-    heatmapDesc: string;
-    viewAnalysis: string;
-    playersTracked: string;
-    accuracy: string;
-    processing: string;
-    ballsDetected: string;
-    trajectoryAccuracy: string;
-    predictionRate: string;
-    courtAccuracy: string;
-    lineDetection: string;
-    calibrationTime: string;
-    dataPoints: string;
-    updateRate: string;
-    heatmapResolution: string;
-  };
   stats: {
     accuracy: string;
     processing: string;
@@ -129,25 +130,26 @@ export const translations: Record<Language, Translations> = {
       },
       trackingTitle: 'Real-time Player Detection',
       trackingDesc: 'Our AI tracks each player\'s position, movement speed, and orientation throughout the match. Bounding boxes and IDs are maintained even during occlusions.',
-      ballTitle: 'Precision Ball Tracking',
-      ballDesc: 'Advanced trajectory prediction using computer vision to track the ball through complex plays, including spikes and serves.',
+      ballTitle: 'Action Recognition & Ball Tracking',
+      ballDesc: 'Track the volleyball\'s path and identify key actions like serves, spikes, and blocks. Analyze velocities and predict landing zones with our advanced physics engine.',
       courtTitle: 'Automatic Court Detection',
-      courtDesc: 'AI-powered court line detection and homography transformation for accurate position mapping and analytics.',
-      heatmapTitle: 'Movement Analysis',
-      heatmapDesc: 'Generate comprehensive heatmaps showing player movement patterns, court coverage, and positioning strategies.',
+      courtDesc: 'Our system automatically identifies court boundaries, zones, and lines regardless of camera angle. This enables accurate spatial analysis and positioning metrics.',
+      heatmapTitle: 'Advanced Statistics & Heat Maps',
+      heatmapDesc: 'Visualize player coverage areas and movement patterns throughout the match. Identify hot zones, defensive gaps, and optimize positioning strategies.',
       viewAnalysis: 'View Analysis',
       playersTracked: 'Players Tracked',
       accuracy: 'Accuracy',
       processing: 'Processing',
-      ballsDetected: 'Balls Detected',
-      trajectoryAccuracy: 'Trajectory Accuracy',
-      predictionRate: 'Prediction Rate',
-      courtAccuracy: 'Court Accuracy',
-      lineDetection: 'Line Detection',
-      calibrationTime: 'Calibration Time',
-      dataPoints: 'Data Points',
-      updateRate: 'Update Rate',
-      heatmapResolution: 'Resolution',
+      actionTypes: 'Action Types',
+      precision: 'Precision',
+      coverage: 'Coverage',
+      zonesMapped: 'Zones Mapped',
+      calibration: 'Calibration',
+      cameraAngle: 'Camera Angle',
+      perPlayer: 'Per Player',
+      analysis: 'Analysis',
+      team: 'Team',
+      timeBased: 'Time Based',
     },
     stats: {
       accuracy: 'Accuracy Rate',
@@ -237,25 +239,26 @@ export const translations: Record<Language, Translations> = {
       },
       trackingTitle: '即時球員檢測',
       trackingDesc: '我們的 AI 追蹤每位球員的位置、移動速度和方向。即使在遮擋情況下也能保持邊界框和 ID。',
-      ballTitle: '精準球體追蹤',
-      ballDesc: '使用電腦視覺進行進階軌跡預測，追蹤複雜動作中的球體，包括扣球和發球。',
+      ballTitle: '動作識別與球體追蹤',
+      ballDesc: '追蹤排球的路徑並識別關鍵動作，如發球、扣球和攔網。使用進階物理引擎分析速度並預測落點。',
       courtTitle: '自動場地檢測',
-      courtDesc: 'AI 驅動的場地線檢測和單應性轉換，實現精確的位置映射和分析。',
-      heatmapTitle: '移動分析',
-      heatmapDesc: '生成全面的熱力圖，顯示球員移動模式、場地覆蓋範圍和位置策略。',
+      courtDesc: '我們的系統自動識別場地邊界、區域和線條，不受攝影機角度影響。這使得精確的空間分析和定位指標成為可能。',
+      heatmapTitle: '進階統計與熱力圖',
+      heatmapDesc: '視覺化比賽中球員的覆蓋範圍和移動模式。識別熱區、防守缺口，優化位置策略。',
       viewAnalysis: '查看分析',
       playersTracked: '追蹤球員數',
       accuracy: '準確率',
       processing: '處理速度',
-      ballsDetected: '檢測球數',
-      trajectoryAccuracy: '軌跡準確率',
-      predictionRate: '預測率',
-      courtAccuracy: '場地準確率',
-      lineDetection: '線條檢測',
-      calibrationTime: '校準時間',
-      dataPoints: '數據點',
-      updateRate: '更新率',
-      heatmapResolution: '解析度',
+      actionTypes: '動作類型',
+      precision: '精確度',
+      coverage: '覆蓋率',
+      zonesMapped: '區域映射',
+      calibration: '校準',
+      cameraAngle: '攝影機角度',
+      perPlayer: '個人',
+      analysis: '分析',
+      team: '團隊',
+      timeBased: '時間軸',
     },
     stats: {
       accuracy: '準確率',
